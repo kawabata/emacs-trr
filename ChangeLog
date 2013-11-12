@@ -1,4 +1,8 @@
-2013-11-20  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
+2013-11-15  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
+
+	* trr.el(TRR:score-dir, TRR:record-dir): new Customization variables.
+
+2013-11-10  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
 
 	* trr.el: Change customizable variables to defcustom/defface
 	* trr-files.el : Replace call-process to trr_update to update-game-score

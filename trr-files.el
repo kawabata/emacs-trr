@@ -9,26 +9,7 @@
 ;;  (setq byte-compile-warnings '(redefine callargs)))
 
 ;; files for a session.
-(require 'gamegrid)
 (defvar   TRR:text-file nil "* text file")
-(defvar   TRR:record-dir ; 個人レコード
-  (expand-file-name "trrscores" gamegrid-user-score-file-directory))
-(defvar   TRR:score-dir  ; グループスコア
-  (expand-file-name "trrscores"
-   (or shared-game-score-directory gamegrid-user-score-file-directory))
-  "`TRR:update-program' を通じて書き込まれるグループスコアの保存場所.")
-;;  (let ((drt (or (getenv "TRRSCORES")
-;;		 (expand-file-name "~/.trrscores"))))
-;;    (if (string= "/"
-;;		 (substring drt
-;;			    (1- (length drt))
-;;			    (length drt)))
-;;	(substring drt 0 (1- (length drt)))
-;;      drt))
-;;  "* directory which your score files will reside.\n\
-;;you can override this by setting the environment variable\n\
-;;$TRRSCORES or (setq TRR:record-dir \"...\")")
-
 (defvar   TRR:record-file nil "* result file for each text.")
 (defvar   TRR:score-file nil "* score file")
 (defvar   TRR:score-file-name nil "* score file name")
@@ -54,14 +35,10 @@
   (with-current-buffer (get-buffer-create TRR:text-file-buffer)
     (erase-buffer)
     (insert-file-contents TRR:text-file)
-    (or (file-exists-p TRR:score-file)
-	;;(call-process  TRR:update-program nil 0 nil TRR:score-file-name))
-        (call-process TRR:update-program
-                      nil TRR:errbuf nil "-d" (expand-file-name "record" TRR:score-dir)
-                      TRR:score-file-name "0" "Cheers!"))
+    ;;(or (file-exists-p TRR:score-file)
+    ;;    (call-process  TRR:update-program nil 0 nil TRR:score-file-name))
     (unless (file-exists-p TRR:score-file)
-      (setq TRR:score-dir gamegrid-user-score-file-directory)
-      (setq TRR:score-file (expand-file-name TRR:score-file-name TRR:score-dir))
+      ;; touch `TRR:score-file'
       (with-temp-file TRR:score-file))
     (find-file-read-only TRR:score-file)
     (find-file TRR:record-file)
@@ -247,15 +224,28 @@
       (goto-char (point-min)))))
 
 (defun TRR:update-score-file (score)
-  (call-process TRR:update-program nil TRR:errbuf nil
-                "-r" "-m" "50" "-d" (expand-file-name "record" TRR:score-dir)
-                TRR:score-file-name
-                (number-to-string score)
-                (format "%s %s %s"
-                        ;; (user-login-name) ;; automatically inserted
+  (if (file-writable-p TRR:score-file)
+      (with-temp-file TRR:score-file
+        (insert-file-contents TRR:score-file)
+        (insert (format "%s %s %s %s %s\n"
+                        (number-to-string score)
+                        (user-login-name)
                         (number-to-string TRR:steps)
                         (number-to-string TRR:total-times)
-                        (number-to-string (/ TRR:total-time 60)))))
+                        (number-to-string (/ TRR:total-time 60))))
+        (sort-numeric-fields 1 (point-min) (point-max))
+        (reverse-region (point-min) (point-max)))
+    (unless (file-exists-p TRR:score-file)
+      (error "Score file (%s) does not exist!  Please check `TRR:score-dir' variable."
+             TRR:score-file))
+    (call-process TRR:update-program nil TRR:errbuf nil
+                  "-r" "-m" "50" "-d" (expand-file-name "record" TRR:score-dir)
+                  TRR:score-file-name
+                  (number-to-string score)
+                  (format "%s %s %s"
+                          (number-to-string TRR:steps)
+                          (number-to-string TRR:total-times)
+                          (number-to-string (/ TRR:total-time 60))))))
   ;;(call-process TRR:update-program nil 0 nil
   ;;      	TRR:score-file-name
   ;;      	(user-login-name)

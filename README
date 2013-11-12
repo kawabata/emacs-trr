@@ -10,15 +10,15 @@ TRR19 (http://code.google.com/p/trr22) を、Emacs 24で動くよう、以下の
   + trr_format.c 相当を elisp に移植。
   + trr_update.c の代わりに、Emacsの update-game-score を利用する。
 - 個人用記録ファイルは、~/.emacs.d/games/trrscores/ に、
-  スコアファイルは /usr/local/var/games/emacs/trrscores/records に分けて記録する。
-  （/usr/local/var/games/emacs/trrscores/record が存在しない場合は
-    ~/.emacs.d/games/trrscores/record を使用する。)
+  スコアファイルは /usr/local/var/games/emacs/trrscores/records に分けて記録できる。
+  (TRR:record-dir, TRR:score-dir で設定)
 
 - スコアファイルを /usr/local/var/games/emacs/trrscores/ に置く場合は、
   事前にシステム管理者が、 "<配布ディレクトリ>/records" を /usr/local/.../trrscores 以下に
-  コピー（し、setuidされた update-game-score プログラム以外は書き込みできないように）します。
+  コピー（し、setuidされた update-game-score プログラム以外は書き込みできないように）する。
   : % sudo mkdir /usr/local/var/games/emacs/trrscores/
-  : % sudo cp -r record /usr/local/var/games/emacs/trrscores/
+  : % sudo cp -r record /usr/local/var/games/emacs/trrscores
+  : % sudo chown -R games /usr/local/var/games/emacs/trrscores
 
 以下はオリジナルのTRRのREADME.euc です。
 

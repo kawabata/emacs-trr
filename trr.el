@@ -33,6 +33,8 @@
 ;;  ;; Shut Emacs' byte-compiler up
 ;;  (setq byte-compile-warnings '(redefine callargs)))
 
+(require 'gamegrid)
+
 ;;; Code:
 ;; Site Constaints.
 ;; consider to modify Makefile instead of this file.
@@ -88,6 +90,19 @@ If nil, coloring not support." :group 'TRR)
 
 (defcustom TRR:japanese t "If t, TRR talk to you in Japanese."
   :type 'boolean :group 'TRR)		; TRRのメッセージを日本語にするかどうか
+
+(defcustom TRR:record-dir ; 個人レコード
+  (expand-file-name "trrscores" gamegrid-user-score-file-directory)
+  "Directory where personal records are stored."
+  :type 'directory :group 'TRR)
+
+(defcustom TRR:score-dir  ; グループスコア
+  (expand-file-name "trrscores"
+   (or shared-game-score-directory gamegrid-user-score-file-directory))
+  "Directory where group score records are stored.
+Score files in this directory must be modifiable by `update-game-score' helper program.
+You must copy original `record' directory to this file before using TRR."
+  :type 'directory :group 'TRR)
 
 ;; Hooks
 (defvar TRR:load-hook nil
