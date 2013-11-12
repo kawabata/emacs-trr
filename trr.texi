@@ -1,0 +1,508 @@
+\input texinfo
+@c -*-texinfo-*-
+@c Last modified on Sun Jun 30 03:11:44 1996
+@c %**start of header
+@documentencoding UTF-8
+@setfilename trr.info
+@settitle TRR19 マニュアル
+@setchapternewpage odd
+@c %**end of header
+@set version 1.0
+
+@titlepage
+@title TRR19 マニュアル for version @value{version}
+@author 山本 泰宇
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1996 Yamamoto Hirotaka
+@end titlepage
+
+@ifinfo
+@node Top
+@top Top Menu
+@comment  node-name,  next,  previous,  up
+
+これは GNU Emacs 上でタイピング能力を向上させるためのパッケージです。
+TRR19 の著作権に関しては GNU の GENERAL PUBLIC LICENSE
+の version 2 もしくはそれ以降に準じるものとします。
+@end ifinfo
+
+@menu
+* History::                     TRR の歴史
+* Installation::                
+* How to play::                 さあ始めよう
+* Further more::                詳しい説明を読んでみよう
+* How to customize::            TRR を料理しちゃおう!
+* Index::                       
+@end menu
+
+@node History
+@comment  node-name,  next,  previous,  up
+@chapter TRR の歴史
+@cindex History
+
+@section The birth of trr
+@cindex birth
+
+  trrが人類の歴史に初めて姿を表したのは1986年のことである。それは沖
+電気工業で当時遊んでいた守山貢氏が、自らのタイプ速度を上げるための練
+習用ツールとして、Dec2060用にPascalで作成したものであった。守山氏は
+その翌年Ｃ版のtrrを作成し、それが次第に普及していくことになる。ちな
+みにtrrという名称（愛称トゥルル）は守山氏が取り敢えず"trainer"から
+"aine"を省略して名付けたのであるが、本当の名前を考える前にそれが各地
+に普及してしまったそうである。
+
+@section Original E-Lisp edition
+
+  trrの歴史に新たな展開が訪れるのはtrrがＩＣＯＴ（新世代コンピュータ技
+術開発機構）に移植されてからである。ＩＣＯＴのリーダーの一人でありしか
+もピアノの名手でもある富士通の近山隆氏が初めてtrrをやってみたところ一
+発で500点以上をマークし（600点を越えていたという証言者もいる）、そのよ
+うな高得点を想定していなかったtrrのプログラムのバグを引き出したという
+逸話はあまりにも有名である。その後trrはＩＣＯＴの中でＮＳＩＳ（日本電
+気技術情報システム開発：現在はNEC情報システムズ）の稲村雄氏により
+Emacs-Lispに翻訳され、稲村公開版 trr として定着していった
+（<INAMURA.92May21180510@@psiux536.icot.or.jp>）。その後ＩＣＯＴの萩原
+氏（現ソニー）などの手によりハイスコアを競い合う形式が確立し、Emacs版
+trrへの人気は絶大なものとなり、第５世代コンピュータプロジェクトの成果
+の一つに数えられる程となった。
+
+@section Great Evolution
+
+  trrにさらに大きな転機が訪れたのは、沖電気工業で当時やはり遊んでいた
+加藤研児氏がＩＣＯＴに出入りするようになってからである。ここで、この
+人物について簡単に紹介しよう。彼は学生時代にはタイプが全く打てず、論
+文を締切りに間に合わせるために担当教授である今井浩助教授(現東大)に自
+分の論文をタイプさせた程の経歴の持ち主である。その時のコンプレックス
+からか、彼は沖電気に入社すると同じ職場の守山氏の作成したＣ版trrに熱中
+し、明けても暮れてもtrrばかりやる毎日であったと言う。
+  彼はＩＣＯＴで進化したtrrに触れ、改めて感銘し即座に改宗すると共に、
+同僚の女性(りみりん)の発言をモデルにして評価メッセージの表示機能を追
+加しはじめた。より馬鹿馬鹿しいメッセージを出すために各種実行情報の集
+計機能を追加すると共に、テキスト選択や立ち上げの高速化等の各種の修正
+及び機能追加を行い、1992年にNemacs版と呼ばれるものを発表した。ちなみ
+に彼はtrrをあまりにやり過ぎて指を痛め、現在はすっかりタイプスピードが
+落ちていると言う。くれぐれもやり過ぎには注意されたい。なお彼は現在、
+数理技研(株)に身を隠している(kato@@suri.co.jp)との情報である。
+
+@section New Generation
+
+  これは長らく親しまれてきたが、残念ながらNemacs上でしか動作しなかっ
+たため、Emacs 19 が世に広まるにつれ徐々に忘れられ始めてしまった。そ
+こで東大情報科学科の山本泰宇(著者)がNemacs版のコードを全面的に見直す
+と共に、英語メッセージ表示などの機能を追加したTRR19を1996年に発表した。
+@cindex TRR19
+
+@node Installation
+@comment  node-name,  next,  previous,  up
+@chapter Installation
+@cindex install
+@cindex installation
+
+以下の手順で行ないます。もし問題があれば ymmt@@is.s.u-tokyo.ac.jp
+まで連絡お願い致します。
+
+
+@menu
+* unpack the package::          TRR を展開する
+* edit Makefile::               Makefile を編集する
+* make all::                    
+* make install::                
+* additional texts::            好きな text を TRR で使う
+* autoload::                    
+@end menu
+
+@node unpack the package
+@comment  node-name,  next,  previous,  up
+@section TRR を展開する
+@cindex unpack
+
+例えば以下のようにして下さい。
+@example
+% zcat trr19.tar.gz | tar xvpf -
+% cd trr19
+@end example
+@*
+GNU tar を使っているなら
+@example
+% tar xvzfp trr19.tar.gz
+% cd trr19
+@end example
+
+@node edit Makefile
+@comment  node-name,  next,  previous,  up
+@section Makefile を編集する
+@cindex Makefile
+
+@file{Makefile} の上の方にある以下の項目を編集して下さい。
+
+@table @samp
+@item trrdir
+TRR の elc file, text の入る directory, high score を保存する
+directory, @file{CONTENTS} file が入る場所です。
+absolute path name でお願いします。
+
+@item bindir
+TRR の外部 command である、trr_update, trr_format が入る
+directory です。
+absolute path name でお願いします。
+
+@item infodir
+info の入る directory です。
+
+@item EMACS
+使用している Emacs version 19 の command 名です。
+
+@item installer
+install する人か、TRR の maintainance をする人の e-mail address や
+本名を入れて下さい。
+
+@item japanese
+TRR の message 表示モードの default を日本語にしたい方は @var{t},
+英語にしたいかたは @var{nil} にして下さい。
+
+@item OPTIONS
+C compiler に渡す option です。大抵はそのままで大丈夫だと思いますが
+何らかの include file がないといわれた場合、-D を削ってみて下さい。
+それでも駄目な時は ymmt@@is.s.u-tokyo.ac.jp まで連絡して下さい。
+
+@item SED, GREP
+path 名が違う時は変えて下さい。@strong{必ず絶対パスで記述して下さい!}
+setuid している command の security のためです。
+
+@end table
+
+@node make all
+@comment  node-name,  next,  previous,  up
+@section make all
+
+Makefile を編集し終ったら @kbd{make all} と type してください。
+失敗した時は Makefile の OPTIONS を変えて試してみて下さい。
+それでもうまくいかない時は system 名、emacs の version,
+エラーの内容を沿えて ymmt@@is.s.u-tokyo.ac.jp まで連絡して下さい。@*
+
+@node make install
+@comment  node-name,  next,  previous,  up
+@section make install
+
+以上が全てうまくいったら TRR を install します。
+@kbd{make install} と type して下さい。
+trrdir, infodir, bindir が存在しない場合は作成されます。
+もし info file がないようならば @kbd{make info} として下さい。
+
+うまくいった後に @file{(infodir)}/dir に trr の項目を
+付け加えるのを忘れないようにして下さい。
+
+@node additional texts
+@comment  node-name,  next,  previous,  up
+@section 好きな text を TRR で使う
+@cindex add text
+@cindex text
+@cindex CONTENTS
+
+TRR19 は日本国憲法と合衆国憲法がいっしょに配布されています。
+これら以外にも自由に好きな text を使って TRR を行なうことが出来ます。
+
+以下のような条件を満たしていることを確認して下さい。
+
+@itemize @bullet
+@item
+US-ASCII であること。変な control code が入っていたりするのは
+駄目です。
+
+@item
+適当な長さ以上であること。短過ぎるのは使えません。
+
+@item
+DOS や MAC の text file なら改行コードを変換すること。
+UNIX では texi file 中の改行は @samp{0x0a} です。
+
+@end itemize
+
+以下では @file{(trrdir)} は Makefile で指定した trrdir の
+こととします。
+
+@enumerate
+@item
+付け加えたい text を @file{(trrdir)}/text にコピーする。
+
+@item
+付け加えた text の情報を @file{(trrdir)}/CONTENTS file に
+書き加える。
+CONTENTS file の書き方は CONTENTS file 内に詳しく書いてあります。
+
+@end enumerate
+
+text file はいつでも好きな時に上のようにして付け加えられます。
+
+@node autoload
+@comment  node-name,  next,  previous,  up
+@section autoload
+@cindex autoload
+
+最後に TRR を autoload 出来るようにします。
+以下のいずれかを選んで下さい。
+なお以下では @file{(trrdir)} は Makefile で指定した trrdir の
+こととします。
+
+@itemize @bullet
+@item
+@file{site-start.el} file に
+@example
+(autoload 'trr "@file{(trrdir)}/trr" nil t)
+@end example
+@*
+を書き加える。
+こうしておけばその site のユーザーは何もせずに @kbd{M-x trr} で
+trr を実行できます。
+
+@item
+各人の @file{.emacs} に
+@example
+(autoload 'trr "@file{(trrdir)}/trr" nil t)
+@end example
+@*
+を書き加える。
+この場合使いたいユーザーに使い方を教えてあげて下さい。
+@end itemize
+
+You are done! 以上で @kbd{M-x trr} と type すれば TRR が出来るはずです。@*
+
+@node How to play
+@comment node-name,     next,           previous, up
+@chapter さあ始めよう
+@cindex start
+@cindex play
+@cindex How to play
+
+TRR は以下のような流れで実行できます。
+
+@enumerate
+@item
+Emacs (MULE) から @kbd{M-x(もしくは ESC-x) trr} @key{RET}
+
+@item
+text の一覧が出てくるので打ちたい text の番号を入力する。
+
+@item
+ちょっと待つと画面が3段にわかれて text が表示されます。
+
+@item
+カーソルの上にある文字をどんどん打っていって下さい。
+間違えるとそこでカーソルが止まります。@key{BackSpace} などで
+直す必要はありません。
+
+@item
+最後まで打つと得点やかかった時間が表示されます。
+
+@item
+menu が出ますので続けたければ 2, もう終りにするのなら 1 を
+押して下さい。
+@end enumerate
+
+
+@node Further more
+@comment node-name,     next,           previous, up
+@chapter もっと TRR を知ろう!
+
+TRR にはいろいろな機能が備わっています。
+
+@menu
+* play level::                  
+* toggling switches::           
+* special keys::                特殊なキー操作
+@end menu
+
+@node play level
+@comment  node-name,  next,  previous,  up
+@section プレイレベル
+@cindex level
+
+TRR は player の level に応じた4つの mode を持っています。
+これは menu の @samp{設定の変更} で変えることが出来ます。
+
+@table @samp
+@item 初心者用 TRR
+表示される text の量は中級者用と同じですが、
+session を繰り返しても同じ text が表示されます。
+得点は初心者用の file に記録されます。
+
+@item 中級者用 TRR
+default ではこの mode になっています。
+これで300点が出せるようになればあなたもなかなかの TRRer でしょう。
+
+@item 上級者用 TRR
+ここは初心者が生半可な気持ちで入ってはいけません。
+text は full screen で出てきて、しかも減点率が
+初心者もしくは中級者用の5倍!!@*
+へたをすれば一生悪夢に悩まされてしまいます。
+@end table
+
+
+@node toggling switches
+@comment  node-name,  next,  previous,  up
+@section トグルスイッチ
+@cindex toggle
+@cindex switch
+
+menu の @samp{設定の変更} の中で いくつかのスイッチを
+切替えることが出来ます。
+
+@itemize @bullet
+@item
+@cindex return
+@key{return} key の扱いの変更を行なえます。行末の @key{return} を本当に
+@key{return} を押さなければいけないようにするか、もしくは
+@key{space} で代用できるようにするかを選べます。
+
+@item
+@cindex language
+@cindex Japanese
+@cindex English
+message の表示言語の切替が出来ます。日本語か英語しか現在書いていません。
+
+@item
+@cindex ding
+@cindex beep
+間違えた時に音を鳴らすか鳴らさないかを選べます。
+
+@item
+@cindex hyphenate
+text 中にある hyphenate された単語を元に戻すかどうかを切替えられます。
+@end itemize
+
+それぞれ該当する番号を選ぶことで切り替わります。
+
+@node special keys
+@comment  node-name,  next,  previous,  up
+@section 特殊なキー操作
+@cindex key
+
+TRR の typing 画面では次のような特殊なキー操作が許されています。
+
+@table @key
+@item C-l
+@cindex refresh screen
+TRR を -nw で起動したりすると biff 等で画面が乱れることがあります。
+そういった時に @key{C-l} を押せば画面を redraw します。
+
+@item C-c
+@cindex quit
+session を始めると TRR は typing のキー入力以外禁止します。
+途中で止めたくなった時は @key{C-c} を押すと即座に終了します。
+
+@end table
+@*
+
+@node How to customize
+@comment node-name,     next,           previous, up
+@chapter 使いやすくしよう
+
+TRR は @file{.emacs} に書くことで User にさらに細かい設定の
+手段を提供しています。
+
+@menu
+* default switch::              
+* default directory::           
+* color::                       色を変更したい
+* hooks::                       フック関数
+@end menu
+
+@node default switch
+@comment  node-name,  next,  previous,  up
+@section toggle switch の default 値
+
+menu の @samp{設定の変更} で毎回設定を変更するのが煩わしい場合
+以下のようにすれば default 値を変更できます。
+
+@table @samp
+@item return
+@code{(setq TRR:return-is-space t)} とすれば default で
+@key{return} キーを @key{space} キーで代用できます。
+@code{(setq TRR:return-is-space nil)} なら出来ません。
+
+@item language
+@code{(setq TRR:japanese nil)} とすると message が default で
+英語の表示になります。t なら日本語です。
+
+@item ding
+@code{(setq TRR:ding-when-miss nil)} とすれば miss したときに
+音がなりません。t だとなるようになります。
+
+@item hyphenate
+@code{(setq TRR:un-hyphenate nil)} とするとハイフネーションを
+戻さなくなります。t だとハイフネーションを消します。
+@end table
+
+@node default directory
+@comment  node-name,  next,  previous,  up
+@section TRR の default directory の変更
+@cindex directory
+
+TRR は通常 install 時に正しい directory を与えられています。
+しかしなんらかの理由でそれを変更したい場合環境変数を
+与えれば変えられます。
+
+@c elc, text, record 等が入っている directory を与えるには
+@c 環境変数 @var{TRRDIR} を定義します。trr_update, trr_format が
+@c 入っている directory は @var{TRRBINDIR} です。
+
+@node color
+@comment  node-name,  next,  previous,  up
+@section 色を変更したい
+@cindex color
+
+default の色指定は明るい背景用になっています。
+これも @file{.emacs} に以下のような指定を加えれば変更できます。
+@*
+
+@table @samp
+@item textの色
+@c TODO face用に要修正
+@code{(setq TRR:text-color-name COLOR)} の color に
+色を表す文字列を入れると打つべき text の色がその色になります。
+@var{COLOR} に nil を指定すれば色がつきません。
+以下も同様の指定方法です。
+
+@item 正しく打った文字の色
+@code{(setq TRR:correct-color-name COLOR)} で指定できます。
+
+@item 間違えた文字の色
+@code{(setq TRR:miss-color-name COLOR)} で指定できます。
+
+@item グラフの星の色
+@code{(setq TRR:graph-color-name COLOR)} で指定できます。
+
+@item 自分の名前の背景の色
+@code{(setq TRR:self-color-name COLOR)} で指定できます。
+@end table
+@*
+
+@node hooks
+@comment  node-name,  next,  previous,  up
+@section フック関数
+@cindex hook
+
+TRR は以下のような hook を用意しています。
+
+@table @var
+@item TRR:load-hook
+TRR を load する時だけ評価されます。
+
+@item TRR:start-hook
+M-x trr を実行する際に評価されます。
+
+@item TRR:end-hook
+TRR を終了する際に評価されます。
+
+@end table
+
+
+@node Index
+@comment  node-name,  next,  previous,  up
+@unnumbered Index
+
+@printindex cp
+     
+@contents
+@bye

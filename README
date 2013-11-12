@@ -1,0 +1,100 @@
+TRR19 beta5 for Emacs 24
+
+TRR19 (http://code.google.com/p/trr22) を、Emacs 24で動くよう、以下の修正をしました。
+
+- カスタマイズ変数の defcustom 化、defface化
+- TRRDIR等の環境変数を使わないようにする。
+- コンパイル時の警告の除去
+- 全ファイルをUTF-8化
+- Makefile 等の除去
+  + trr_format.c 相当を elisp に移植。
+  + trr_update.c の代わりに、Emacsの update-game-score を利用する。
+- 個人用記録ファイルは、~/.emacs.d/games/trrscores/ に、
+  スコアファイルは /usr/local/var/games/emacs/trrscores/records に分けて記録する。
+  （/usr/local/var/games/emacs/trrscores/record が存在しない場合は
+    ~/.emacs.d/games/trrscores/record を使用する。)
+
+- スコアファイルを /usr/local/var/games/emacs/trrscores/ に置く場合は、
+  事前にシステム管理者が、 "<配布ディレクトリ>/records" を /usr/local/.../trrscores 以下に
+  コピー（し、setuidされた update-game-score プログラム以外は書き込みできないように）します。
+  : % sudo mkdir /usr/local/var/games/emacs/trrscores/
+  : % sudo cp -r record /usr/local/var/games/emacs/trrscores/
+
+以下はオリジナルのTRRのREADME.euc です。
+
+--------------------------------------------------------------------
+
+TRR19 1.0 beta5 for Emacs20
+
+Emacs20で動くように作者の山本さんの指摘のとおり、すべてのelファイルを
+nkfを使ってJISコードに変更しました。
+
+
+README.euc file for TRR19 1.0 beta5
+
+1. 前の version からの変更による注意点
+環境変数 TRRDIR は現在も support はしていますがほぼ不要のものです。
+以前の trr とは別の場所に install するのならユーザーに TRRDIR の
+設定を消してもらって下さい。さもないとうまく動きません。
+また個人用の score file ( (trrdir)/record 中にある (login-name)-**)
+は各個人の ~/.trrscores に行くようになりました。
+以前の score file を残しておきたい方はそちらに copy するといいでしょう。
+
+TRR19 version 1.0 beta3 からの変更点
+ format および update は /usr/local/bin に default では
+入れるようにしました。プログラム名も trr_format, trr_update に
+なっています。
+install 場所は bindir を変えれば別のところに入れても大丈夫です。
+
+また trr.el は Makefile を適切に変更すれば正しく設定されるように
+しました。trr.el.base から自動生成されます。
+
+texinfo 及び info file を作成しました。
+
+
+2. TRR19のインストール方法
+詳しい install 方法は info file に載っています。
+ここでも大体のことを説明しておきます。
+
+  以下の順序でインストールする。
+
+  1) trr を展開する。
+	> tar zvxf trr19.tar.gz
+
+  2) 1)で出来た trr19 という directory にいき、
+     Makefile 中の trrdir を install する directory に、
+     infodir を info を入れる directory に、
+     EMACS を emacs または mule のコマンド名に編集して下さい。
+     bindir を trr_update, trr_format が入る場所に変えて下さい。
+     また OPTIONS で定義されている header がない場合、削ってみて下さい。
+     SunOS4.1 の方はそのままで大丈夫です。
+     installer を install する人の e-mail address 等に変えて下さい。
+     japanese を default で message を日本語で見たい方は t に、
+     英語で見たい方は nil にしてください。
+     SED や GREP の path が違う人は書き換えて下さい。
+
+  3) make all
+     *.c, *.el file を compile します。もし C の compile が
+     うまくいかない時は Makefile の OPTIONS を変えてみて下さい。
+
+  4) make install
+
+  5) (trrdir)/text に付け加えたい text があれば入れて下さい。
+     (trrdir)/CONTENTS に付け加えた text の情報を書き加えて下さい。
+
+  6) site-start.el か ~/.emacs に
+     (autoload 'trr "(trrdir)/trr" nil t) と書き加えて下さい。
+     trrdir は trr を install した directory です。
+
+You are done! 以上で M-x trr で TRR19 が出来るようになったはずです。
+
+
+3. Bug report, 提案, 質問等
+ymmt@is.s.u-tokyo.ac.jp までどうぞ
+特に SunOS 以外での動作を確認したいので動作報告をよろしくお願いします。
+
+TRR19 は http://tje12.is.s.u-tokyo.ac.jp/~ymmt/mydist.html
+
+から持っていけます。
+しばらくは細かく version up する予定なので興味のある方は
+時おり覗いて下さい。
