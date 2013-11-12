@@ -665,11 +665,11 @@ speed    : %4d\n\
   (setq TRR:pass-flag
 	(and (>= TRR:eval (* 10 (1+ TRR:steps)))
 	     (not (TRR:cheat-p))))
-  ;;(setq TRR:update-flag
-  ;;      (and (or (> TRR:eval TRR:high-score)
-  ;;      	 (< TRR:high-score-old 0))
-  ;;	     (not (TRR:cheat-p))))
-  (setq TRR:update-flag t)
+  (setq TRR:update-flag
+        (and (or (> TRR:eval TRR:high-score)
+        	 (< TRR:high-score-old 0))
+  	     (not (TRR:cheat-p))))
+  ;; (setq TRR:update-flag t) ; for debugging
   (setq TRR:beginner-flag (< TRR:high-score-old 0))
   (if TRR:cheat-flag nil
     (setq TRR:total-time (+ TRR:total-time TRR:elapsed-time))
