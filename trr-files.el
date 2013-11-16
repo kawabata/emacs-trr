@@ -1,12 +1,7 @@
-;;; trr-files - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
-;;; Last modified on Mon Jul  1 09:56:41 1996
+;;; trr-files --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 
-;; This file is a part of TRR19, a type training package for Emacs19.
-;; See the copyright notice in trr.el.base
-
-;;(eval-when-compile
-;;  ;; Shut Emacs' byte-compiler up
-;;  (setq byte-compile-warnings '(redefine callargs)))
+;; This file is a part of TRR, a type training package for GNU Emacs.
+;; See the copyright notice in trr.el
 
 ;; files for a session.
 (defvar   TRR:text-file nil "* text file")
@@ -39,6 +34,7 @@
     ;;    (call-process  TRR:update-program nil 0 nil TRR:score-file-name))
     (unless (file-exists-p TRR:score-file)
       ;; touch `TRR:score-file'
+      (make-directory (file-name-directory TRR:score-file) t)
       (with-temp-file TRR:score-file))
     (find-file-read-only TRR:score-file)
     (find-file TRR:record-file)
@@ -218,34 +214,44 @@
 	(insert "\n\n")
 	(forward-line 1))
       (and window-system
-	   ;;TRR:text-color-name
 	   (put-text-property (point-min) (point-max) 'face
 			      'TRR:text-face))
       (goto-char (point-min)))))
 
 (defun TRR:update-score-file (score)
-  (if (file-writable-p TRR:score-file)
-      (with-temp-file TRR:score-file
-        (insert-file-contents TRR:score-file)
-        (insert (format "%s %s %s %s %s\n"
-                        (number-to-string score)
-                        (user-login-name)
-                        (number-to-string TRR:steps)
-                        (number-to-string TRR:total-times)
-                        (number-to-string (/ TRR:total-time 60))))
-        (sort-numeric-fields 1 (point-min) (point-max))
-        (reverse-region (point-min) (point-max)))
+  "Write SCORE to `TRR:score-file'."
+  (if (not TRR:use-update-program)
+      (if (file-writable-p TRR:score-file)
+          (with-temp-file TRR:score-file
+            (insert-file-contents TRR:score-file)
+            (insert (format "%s %s %s %s %s\n"
+                            (number-to-string score)
+                            (user-login-name)
+                            (number-to-string TRR:steps)
+                            (number-to-string TRR:total-times)
+                            (number-to-string (/ TRR:total-time 60))))
+            (sort-numeric-fields 1 (point-min) (point-max))
+            (reverse-region (point-min) (point-max)))
+        (error "Score file (%s) is not writable!  Please check `TRR:score-dir' variable"
+               TRR:score-file))
     (unless (file-exists-p TRR:score-file)
-      (error "Score file (%s) does not exist!  Please check `TRR:score-dir' variable."
+      (error "Score file (%s) does not exist!  Please check `TRR:score-dir' variable"
              TRR:score-file))
-    (call-process TRR:update-program nil TRR:errbuf nil
-                  "-r" "-m" "50" "-d" (expand-file-name "record" TRR:score-dir)
-                  TRR:score-file-name
-                  (number-to-string score)
-                  (format "%s %s %s"
-                          (number-to-string TRR:steps)
-                          (number-to-string TRR:total-times)
-                          (number-to-string (/ TRR:total-time 60))))))
+    (unless (file-executable-p TRR:update-program)
+      (error "Helper program (%s) is not executable" TRR:update-program))
+    (let
+        ((result
+          (call-process TRR:update-program nil TRR:errbuf nil
+                        "-r" "-m" "50" "-d" (expand-file-name "record" TRR:score-dir)
+                        TRR:score-file-name
+                        (number-to-string score)
+                        (format "%s %s %s"
+                                (number-to-string TRR:steps)
+                                (number-to-string TRR:total-times)
+                                (number-to-string (/ TRR:total-time 60))))))
+      (if (/= result 0)
+          (error "Failed to write score file (%s) by helper program (%s)! Please check permissions"
+                 TRR:score-file TRR:update-program)))))
   ;;(call-process TRR:update-program nil 0 nil
   ;;      	TRR:score-file-name
   ;;      	(user-login-name)

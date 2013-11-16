@@ -1,13 +1,7 @@
 ;;; trr-menus - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
-;;; Last modified on Mon Jul  1 00:10:59 1996
 
-;; This file is a part of TRR19, a type training package for Emacs19.
-;; See the copyright notice in trr.el.base
-
-;;(eval-when-compile
-;;  ;; Shut Emacs' byte-compiler up
-;;  (setq byte-compile-warnings '(redefine callargs)))
-
+;; This file is a part of TRR, a type training package for GNU Emacs.
+;; See the copyright notice in trr.el
 
 ;; answer getting function
 (defun TRR:get-answer (string1 string2 max)
@@ -236,7 +230,7 @@ at the end of a line.\n\n")
 			       "Commit yourself!" 12))))
     (cond
      ((= num 1) (setq TRR:quit-flag t) nil)
-     ((= num 2) 
+     ((= num 2)
       (TRR:read-file) ;  Read next text
       t)
      ((= num 3)

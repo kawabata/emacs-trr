@@ -1,12 +1,7 @@
-;;; trr-graphs - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
-;;; Last modified on Sun Jun 30 03:11:22 1996
+;;; trr-graphs --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 
-;; This file is a part of TRR19, a type training package for Emacs19.
-;; See the copyright notice in trr.el.base
-
-;;(eval-when-compile
-;;  ;; Shut Emacs' byte-compiler up
-;;  (setq byte-compile-warnings '(redefine callargs)))
+;; This file is a part of TRR, a type training package for GNU Emacs.
+;; See the copyright notice in trr.el
 
 ;; Variables for writing graphs
 (defvar TRR:skipped-step         0 "the number of skipped steps")
@@ -71,7 +66,7 @@
 	 (let ((diff (- steps (* horizontal-steps 2))))
 	   (setq scale-x 2)
 	   (if (> diff 0)
-	       (progn 
+	       (progn
 		 (while (> diff 0)
 		   (setq revlist (cdr revlist))
 		   (setq move-count (1+ move-count))
@@ -215,9 +210,7 @@ Order\tScore\tName\t\tstep\ttimes\ttime\tdate,     hour\n"))
 	    (setq self (point))
 	    (while (not (looking-at "\t")) (forward-char 1))
 	    (and window-system
-		 ;;TRR:self-color-name
 		 (put-text-property self (point) 'face
-				    ;;TRR:self-face-name))
 				    'TRR:self-face))
 	    (insert " <")
 	    (and (< (length (user-login-name)) 4)
@@ -232,10 +225,8 @@ Order\tScore\tName\t\tstep\ttimes\ttime\tdate,     hour\n"))
     (setq j (point))
     (end-of-line)
     (and window-system
-	 ;;TRR:graph-color-name
 	 (/= j (point))
 	 (put-text-property j (1+ (point)) 'face
-			    ;;TRR:top-face-name))
 			    'TRR:graph-face))
     (switch-to-buffer (TRR:display-buffer))
     (if self

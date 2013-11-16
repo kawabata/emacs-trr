@@ -1,12 +1,7 @@
 ;;; trr-message.el - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
-;;; Last modified on Sun Jun 30 03:11:31 1996
 
-;; This file is a part of TRR19, a type training package for Emacs19.
-;; See the copyright notice in trr.el.base
-
-(eval-when-compile
-  ;; Shut Emacs' byte-compiler up
-  (setq byte-compile-warnings '(redefine callargs)))
+;; This file is a part of TRR, a type training package for GNU Emacs.
+;; See the copyright notice in trr.el
 
 ;; メッセージは以下の変数の値によって決められる。
 ;; 暇な人が現れてもっと適切なメッセージ体系を構築してくれることを望む。
@@ -234,7 +229,7 @@
 		"苦しみぬいたわね。"
 	      "You've gone through all sorts of hardships. ")))
    (t
-    (insert 
+    (insert
      (format (if TRR:japanese
 		 "%d回も挑戦するなんてすごいわ。執念でやりとげたわね。"
 	       "You've challenged this step %d times. Great efforts! ")
@@ -242,7 +237,7 @@
 
 
 (defun TRR:message-for-failed-one-1 (diff)
-  (cond 
+  (cond
    ((< diff 10)
     (insert (if TRR:japanese
 		"あとほんの少しだったのに....本当に惜しかったわね。"
@@ -294,7 +289,7 @@
 
 
 (defun TRR:message-for-failed-one-3 (diff)
-  (cond 
+  (cond
    ((< diff 110)
     (insert (if TRR:japanese
 		"「TRRの道は一日にしてならず」"
@@ -322,7 +317,7 @@
 
 
 (defun TRR:message-specially-for-record-breaker ()
-  (cond 
+  (cond
    ((< TRR:high-score-old 100)
     (insert (if TRR:japanese
 		"ついに業界必須の100点突破ね！これからは業界標準の200点を目指して頑張りましょう。"

@@ -1,16 +1,15 @@
 \input texinfo
 @c -*-texinfo-*-
-@c Last modified on Sun Jun 30 03:11:44 1996
 @c %**start of header
 @documentencoding UTF-8
 @setfilename trr.info
-@settitle TRR19 マニュアル
+@settitle TRR マニュアル
 @setchapternewpage odd
 @c %**end of header
 @set version 1.0
 
 @titlepage
-@title TRR19 マニュアル for version @value{version}
+@title TRR マニュアル for version @value{version}
 @author 山本 泰宇
 @page
 @vskip 0pt plus 1filll
@@ -23,7 +22,7 @@ Copyright @copyright{} 1996 Yamamoto Hirotaka
 @comment  node-name,  next,  previous,  up
 
 これは GNU Emacs 上でタイピング能力を向上させるためのパッケージです。
-TRR19 の著作権に関しては GNU の GENERAL PUBLIC LICENSE
+TRR の著作権に関しては GNU の GENERAL PUBLIC LICENSE
 の version 2 もしくはそれ以降に準じるものとします。
 @end ifinfo
 
@@ -105,9 +104,6 @@ trrへの人気は絶大なものとなり、第５世代コンピュータプ�
 
 @menu
 * unpack the package::          TRR を展開する
-* edit Makefile::               Makefile を編集する
-* make all::                    
-* make install::                
 * additional texts::            好きな text を TRR で使う
 * autoload::                    
 @end menu
@@ -129,70 +125,6 @@ GNU tar を使っているなら
 % cd trr19
 @end example
 
-@node edit Makefile
-@comment  node-name,  next,  previous,  up
-@section Makefile を編集する
-@cindex Makefile
-
-@file{Makefile} の上の方にある以下の項目を編集して下さい。
-
-@table @samp
-@item trrdir
-TRR の elc file, text の入る directory, high score を保存する
-directory, @file{CONTENTS} file が入る場所です。
-absolute path name でお願いします。
-
-@item bindir
-TRR の外部 command である、trr_update, trr_format が入る
-directory です。
-absolute path name でお願いします。
-
-@item infodir
-info の入る directory です。
-
-@item EMACS
-使用している Emacs version 19 の command 名です。
-
-@item installer
-install する人か、TRR の maintainance をする人の e-mail address や
-本名を入れて下さい。
-
-@item japanese
-TRR の message 表示モードの default を日本語にしたい方は @var{t},
-英語にしたいかたは @var{nil} にして下さい。
-
-@item OPTIONS
-C compiler に渡す option です。大抵はそのままで大丈夫だと思いますが
-何らかの include file がないといわれた場合、-D を削ってみて下さい。
-それでも駄目な時は ymmt@@is.s.u-tokyo.ac.jp まで連絡して下さい。
-
-@item SED, GREP
-path 名が違う時は変えて下さい。@strong{必ず絶対パスで記述して下さい!}
-setuid している command の security のためです。
-
-@end table
-
-@node make all
-@comment  node-name,  next,  previous,  up
-@section make all
-
-Makefile を編集し終ったら @kbd{make all} と type してください。
-失敗した時は Makefile の OPTIONS を変えて試してみて下さい。
-それでもうまくいかない時は system 名、emacs の version,
-エラーの内容を沿えて ymmt@@is.s.u-tokyo.ac.jp まで連絡して下さい。@*
-
-@node make install
-@comment  node-name,  next,  previous,  up
-@section make install
-
-以上が全てうまくいったら TRR を install します。
-@kbd{make install} と type して下さい。
-trrdir, infodir, bindir が存在しない場合は作成されます。
-もし info file がないようならば @kbd{make info} として下さい。
-
-うまくいった後に @file{(infodir)}/dir に trr の項目を
-付け加えるのを忘れないようにして下さい。
-
 @node additional texts
 @comment  node-name,  next,  previous,  up
 @section 好きな text を TRR で使う
@@ -200,7 +132,7 @@ trrdir, infodir, bindir が存在しない場合は作成されます。
 @cindex text
 @cindex CONTENTS
 
-TRR19 は日本国憲法と合衆国憲法がいっしょに配布されています。
+TRR は日本国憲法と合衆国憲法がいっしょに配布されています。
 これら以外にも自由に好きな text を使って TRR を行なうことが出来ます。
 
 以下のような条件を満たしていることを確認して下さい。
@@ -439,9 +371,15 @@ menu の @samp{設定の変更} で毎回設定を変更するのが煩わしい
 @section TRR の default directory の変更
 @cindex directory
 
-TRR は通常 install 時に正しい directory を与えられています。
-しかしなんらかの理由でそれを変更したい場合環境変数を
-与えれば変えられます。
+TRR は通常、プレーヤーの記録とゲームスコアを
+@code{~/.emacs.d/games/trrscores/} に保存しますが、変更したい場合はそれぞ
+れ、@code{(setq TRR:record-dir XXXXX)} および@code{(setq TRR:score-dir
+XXXXX)} で変更できます。 @code{TRR:record-dir} を、update-game-score を使っ
+て更新する場合は  @code{(setq TRR:use-update-program t)} としてください。
+
+@c TRR は通常 install 時に正しい directory を与えられています。
+@c しかしなんらかの理由でそれを変更したい場合環境変数を
+@c 与えれば変えられます。
 
 @c elc, text, record 等が入っている directory を与えるには
 @c 環境変数 @var{TRRDIR} を定義します。trr_update, trr_format が
@@ -453,28 +391,27 @@ TRR は通常 install 時に正しい directory を与えられています。
 @cindex color
 
 default の色指定は明るい背景用になっています。
-これも @file{.emacs} に以下のような指定を加えれば変更できます。
+これらは、@code{M-x customize-group TRR} で変更できます。
 @*
 
 @table @samp
 @item textの色
-@c TODO face用に要修正
-@code{(setq TRR:text-color-name COLOR)} の color に
+@code{(set-face-foreground 'TRR:text-face COLOR)} の color に
 色を表す文字列を入れると打つべき text の色がその色になります。
 @var{COLOR} に nil を指定すれば色がつきません。
 以下も同様の指定方法です。
 
 @item 正しく打った文字の色
-@code{(setq TRR:correct-color-name COLOR)} で指定できます。
+@code{(set-face-foreground 'TRR:correct-face COLOR)} で指定できます。
 
 @item 間違えた文字の色
-@code{(setq TRR:miss-color-name COLOR)} で指定できます。
+@code{(set-face-foreground 'TRR:miss-face COLOR)} で指定できます。
 
 @item グラフの星の色
-@code{(setq TRR:graph-color-name COLOR)} で指定できます。
+@code{(set-face-foreground 'TRR:graph-face COLOR)} で指定できます。
 
 @item 自分の名前の背景の色
-@code{(setq TRR:self-color-name COLOR)} で指定できます。
+@code{(set-face-foreground 'TRR:self-face COLOR)} で指定できます。
 @end table
 @*
 

@@ -1,6 +1,9 @@
-2013-11-15  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
+2013-11-17  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
 
-	* trr.el(TRR:score-dir, TRR:record-dir): new Customization variables.
+	* trr.el: Removed maintainer field.
+	* trr.el (TRR:score-dir, TRR:record-dir)
+	(TRR:use-update-game-score): new Customization variables.
+	* trr.texi: rewrite.  Rename from TRR19 to TRR.
 
 2013-11-10  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
 

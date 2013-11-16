@@ -1,12 +1,7 @@
 ;;; trr-sessions - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
-;;; Last modified on Sun Jun 30 03:12:17 1996
 
-;; This file is a part of TRR19, a type training package for Emacs19.
-;; See the copyright notice in trr.el.base
-
-(eval-when-compile
-  ;; Shut Emacs' byte-compiler up
-  (setq byte-compile-warnings '(redefine callargs)))
+;; This file is a part of TRR, a type training package for GNU Emacs.
+;; See the copyright notice in trr.el
 
 ;; for now, there is only one type of session is supported.
 (defun TRR:get-event ()
@@ -95,13 +90,11 @@
 		  (progn
 		    (insert-char TRR:ch 1)
 		    (and window-system
-			 ;;TRR:correct-color-name
 			 (put-text-property (1- (point)) (point) 'face
 					    'TRR:correct-face))
 		    (setq TRR:ch (TRR:get-event)))
 		(insert-char 13 1)         ; cr mark
 		(and window-system
-		     ;;TRR:correct-color-name
 		     (put-text-property (1- (point)) (point) 'face
 					'TRR:correct-face))
 		(setq lines (1- lines))
@@ -126,7 +119,6 @@
 		      (/= TRR:ch 18)
 		      (/= TRR:ch  3))
 	    (and window-system
-		 ;; TRR:miss-color-name
 		 (put-text-property (point) (1+ (point))
 				    'face
 				    'TRR:miss-face))
@@ -155,14 +147,12 @@
 		  (setq lines 0)
 		(insert-char TRR:ch 1)        ; blink or reverse mode
 		(and window-system
-		     ;;TRR:miss-color-name
 		     (put-text-property (1- (point))  (point)
 					'face 'TRR:miss-face))
 		(setq TRR:ch (TRR:get-event)))
 	    (setq lines (1- lines))
 	    (insert-char 13 1)             ; cr mark
 	    (and window-system
-		 ;;TRR:miss-color-name
 		 (put-text-property (1- (point))  (point)
 				    'face 'TRR:miss-face))
 	    (if (/= lines 0)

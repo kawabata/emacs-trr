@@ -1,14 +1,13 @@
 ;;; trr.el --- a type-writing training program on GNU Emacs.
 ;;; Copyright (C) 1996 YAMAMOTO Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
-;;; Last modified on Mon Jul  1 09:02:54 1996
 
 ;; Author: YAMAMOTO Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 ;;	KATO Kenji <kato@suri.co.jp>
 ;;		*Original Author
 ;;	INAMURA You <inamura@icot.or.jp>
 ;;		*Original Author
-;; Maintainer: YAMAMOTO Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 ;; Created: 1 July 1996
+;; Modified: 2013-11-15
 ;; Version: 1.0 beta5
 ;; Keywords: games faces
 
@@ -29,24 +28,10 @@
 ;; file named COPYING.  Among other things, the copyright notice
 ;; and this notice must be preserved on all copies.
 
-;;(eval-when-compile
-;;  ;; Shut Emacs' byte-compiler up
-;;  (setq byte-compile-warnings '(redefine callargs)))
+;;; Code:
 
 (require 'gamegrid)
-
-;;; Code:
-;; Site Constaints.
-;; consider to modify Makefile instead of this file.
-
-;;(defconst TRR:default-directory "/var/lib/trr22"
-;;  "*Default directory for TRR elc files.")
-
-;;(defconst TRR:default-bin-directory "/usr/share/emacs/site-lisp/trr22"
-;;  "*Default directory for TRR binary files.")
-
-;;(defconst TRR:default-japanese t
-;;  "* if t, TRR displays its messages in Japanese by default.")
+(require 'picture)
 
 (defconst TRR:installator "shuji.narazaki@gmail.com"
   "instllators name or e-mail address")
@@ -60,24 +45,23 @@
 
 (defface TRR:text-face '((((background dark)) (:foreground "LightBlue"))
                             (t (:foreground "blue")))
-  "Color name for text characters. If nil, coloring not support." :group 'TRR)
+  "Face for text characters." :group 'TRR)
 
 (defface TRR:correct-face '((((background dark)) (:foreground "RoyalBlue"))
                             (t (:foreground "RoyalBlue")))
-  "Color name for correct typed character. If nil, coloring not support." :group 'TRR)
+  "Face for correct typed character." :group 'TRR)
 
 (defface TRR:miss-face '((((background dark)) (:foreground "red"))
                         (t (:foreground "red")))
-  "Color name for correct typed character. If nil, coloring not support." :group 'TRR)
+  "Face for correct typed character." :group 'TRR)
 
 (defface TRR:graph-face '((((background dark)) (:foreground "blue"))
                         (t (:foreground "blue")))
-  "Color name for the stars in Graph. If nil, coloring not support." :group 'TRR)
+  "Face for the stars in Graph." :group 'TRR)
 
 (defface TRR:self-face '((((background dark)) (:foreground "aquamarine"))
                         (t (:foreground "aquamarine")))
-  "Color name for highlighting the name of yourself.\
-If nil, coloring not support." :group 'TRR)
+  "Face for highlighting the name of yourself." :group 'TRR)
 
 (defcustom TRR:un-hyphenate t "Whether deny hyphnenations."
   :type 'boolean :group 'TRR)		; ハイフネーションを消すかどうか
@@ -91,6 +75,9 @@ If nil, coloring not support." :group 'TRR)
 (defcustom TRR:japanese t "If t, TRR talk to you in Japanese."
   :type 'boolean :group 'TRR)		; TRRのメッセージを日本語にするかどうか
 
+(defcustom TRR:use-update-program nil "If t, use `update-game-score'
+program to write score file." :type 'boolean :group 'TRR)
+
 (defcustom TRR:record-dir ; 個人レコード
   (expand-file-name "trrscores" gamegrid-user-score-file-directory)
   "Directory where personal records are stored."
@@ -98,10 +85,10 @@ If nil, coloring not support." :group 'TRR)
 
 (defcustom TRR:score-dir  ; グループスコア
   (expand-file-name "trrscores"
-   (or shared-game-score-directory gamegrid-user-score-file-directory))
+   (or gamegrid-user-score-file-directory shared-game-score-directory))
   "Directory where group score records are stored.
-Score files in this directory must be modifiable by `update-game-score' helper program.
-You must copy original `record' directory to this file before using TRR."
+If `TRR:use-update-program' is t, score files in this directory must exist
+and be writable by `update-game-score' helper program. "
   :type 'directory :group 'TRR)
 
 ;; Hooks
@@ -135,34 +122,6 @@ You must copy original `record' directory to this file before using TRR."
 					; ウィンドウが小さいかどうか
 (defvar TRR:skip-session-flag nil "whether TRR skip session")
 					; セッションを実行しないかどうか
-
-;; face support
-;;(if TRR:text-color-name
-;;    (progn
-;;      (defconst TRR:text-face-name (intern TRR:text-color-name))
-;;      (make-face TRR:text-face-name)
-;;      (set-face-foreground TRR:text-face-name TRR:text-color-name)))
-;;(if TRR:correct-color-name
-;;    (progn
-;;      (defconst TRR:correct-face-name (intern TRR:correct-color-name))
-;;      (make-face TRR:correct-face-name)
-;;      (set-face-foreground TRR:correct-face-name TRR:correct-color-name)))
-;;(if TRR:miss-color-name
-;;    (progn
-;;      (defconst TRR:miss-face-name (intern TRR:miss-color-name))
-;;      (make-face TRR:miss-face-name)
-;;      (set-face-foreground TRR:miss-face-name TRR:miss-color-name)))
-;;(if TRR:graph-color-name
-;;    (progn
-;;      (defconst TRR:top-face-name (intern TRR:graph-color-name))
-;;      (make-face TRR:top-face-name)
-;;      (set-face-foreground TRR:top-face-name TRR:graph-color-name)))
-;;(if TRR:self-color-name
-;;    (progn
-;;      (defconst TRR:self-face-name (intern (concat TRR:self-color-name
-;;                                               "-back")))
-;;      (make-face TRR:self-face-name)
-;;      (set-face-background TRR:self-face-name TRR:self-color-name)))
 
 ;; Buffer names
 (defun TRR:trainer-menu-buffer ()
@@ -228,16 +187,6 @@ You must copy original `record' directory to this file before using TRR."
   (file-name-directory (or byte-compile-current-file
                            load-file-name
                            buffer-file-name)))
-  ;;(let ((drt (or (getenv "TRRDIR") TRR:default-directory)))
-  ;;  (while (string= "/" (substring drt (1- (length drt)) (length drt)))
-  ;;    (setq drt (substring drt 0 (1- (length drt)))))
-  ;;  (concat drt "/")))
-
-;; (defvar TRR:bin-directory
-;;   (let ((drt (or (getenv "TRRBINDIR") TRR:default-bin-directory)))
-;;     (while (string= "/" (substring drt (1- (length drt)) (length drt)))
-;;       (setq drt (substring drt 0 (1- (length drt)))))
-;;     (concat drt "/")))
 
 (defvar TRR:number-of-text-lines 0 "(the number of lines in text) - 18")
 					; テキストの行数 - 18
@@ -284,13 +233,10 @@ You must copy original `record' directory to this file before using TRR."
 
 
 ;; files used by TRR
-;;(defvar TRR:update-program (expand-file-name "trr_update" TRR:bin-directory))
 (defvar TRR:update-program (expand-file-name "update-game-score" exec-directory))
-;;(defvar TRR:format-program (expand-file-name "trr_format" TRR:bin-directory))
 (defvar TRR:select-text-file (expand-file-name "CONTENTS" TRR:directory))
 
 ;;; load files
-(require 'picture)
 (require 'trr-mesg)
 (require 'trr-files)
 (require 'trr-menus)
@@ -306,6 +252,7 @@ You must copy original `record' directory to this file before using TRR."
       (max 0 (if (= time 0) 0 (/ (* (- whole (* miss 50)) 60) time)))
     (max 0 (if (= time 0) 0 (/ (* (- whole (* miss 10)) 60) time)))))
 
+;;;###autoload
 (defun trr ()
   "Start TRR."
   (interactive)
