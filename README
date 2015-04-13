@@ -1,24 +1,31 @@
-TRR19 beta5 for Emacs 24
+TRR for Emacs 24
 
-TRR19 (http://code.google.com/p/trr22) を、Emacs 24で動くよう、以下の修正をしました。
+TRR は、GNU Emacs 上で動作する、タイピング能力を向上するためのトレーニ
+ングソフトウェアです。
 
-- カスタマイズ変数の defcustom 化、defface化
+従来のTRRパッケージ (http://code.google.com/p/trr22) を、Emacs 24 向け
+に以下の修正を実施しました。
+
+- カスタマイズ変数の defcustom 化＋defface化
 - TRRDIR等の環境変数を使わないようにする。
 - コンパイル時の警告の除去
 - 全ファイルをUTF-8化
 - Makefile 等の除去
   + trr_format.c 相当を elisp に移植。
   + trr_update.c の代わりに、Emacsの update-game-score を利用する。
-- 個人用記録ファイルは、~/.emacs.d/games/trrscores/ に、
-  スコアファイルは /usr/local/var/games/emacs/trrscores/records に分けて記録できる。
+- 個人用記録ファイルとスコアファイルを分けて記録できる。
   (TRR:record-dir, TRR:score-dir で設定)
 
-- スコアファイルを /usr/local/var/games/emacs/trrscores/ に置く場合は、
-  事前にシステム管理者が、 "<配布ディレクトリ>/records" を /usr/local/.../trrscores 以下に
-  コピー（し、setuidされた update-game-score プログラム以外は書き込みできないように）する。
+- スコアファイルを共有ディレクトリ （/usr/local/var/games/emacs/trrscores/） 
+  に置く場合は、事前にシステム管理者が、 "<配布ディレクトリ>/record"
+  を /usr/local/var/games/emacs/trrscores 以下にコピー（し、setuidされ
+  た update-game-score プログラム以外は書き込みできないように）する。
+
   : % sudo mkdir /usr/local/var/games/emacs/trrscores/
   : % sudo cp -r record /usr/local/var/games/emacs/trrscores
   : % sudo chown -R games /usr/local/var/games/emacs/trrscores
+
+  また、利用者は 変数 TRR:use-update-program を t に設定する。
 
 以下はオリジナルのTRRのREADME.euc です。
 
@@ -38,7 +45,7 @@ README.euc file for TRR19 1.0 beta5
 設定を消してもらって下さい。さもないとうまく動きません。
 また個人用の score file ( (trrdir)/record 中にある (login-name)-**)
 は各個人の ~/.trrscores に行くようになりました。
-以前の score file を残しておきたい方はそちらに copy するといいでしょう。
+以前の  score file を残しておきたい方はそちらに copy するといいでしょう。
 
 TRR19 version 1.0 beta3 からの変更点
  format および update は /usr/local/bin に default では

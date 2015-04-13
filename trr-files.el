@@ -105,7 +105,7 @@
 	  ;;(call-process "/bin/rm" nil 0 nil "-f" TRR:record-dir)
           (if (file-exists-p TRR:record-dir)
               (delete-file TRR:record-dir))
-	  (make-directory TRR:record-dir)))
+	  (make-directory TRR:record-dir t)))
     (setq TRR:record-file
           (expand-file-name (concat (user-login-name) "-" temp-id (TRR:file-string))
                             TRR:record-dir))

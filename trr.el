@@ -184,8 +184,7 @@ and be writable by `update-game-score' helper program. "
 
 ;; other variables
 (defvar TRR:directory
-  (file-name-directory (or byte-compile-current-file
-                           load-file-name
+  (file-name-directory (or load-file-name
                            buffer-file-name)))
 
 (defvar TRR:number-of-text-lines 0 "(the number of lines in text) - 18")
