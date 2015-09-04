@@ -234,10 +234,6 @@ and be writable by `update-game-score' helper program. "
 (defvar TRR:update-program (expand-file-name "update-game-score" exec-directory))
 (defvar TRR:select-text-file)
 
-(defun TRR:initiate-filename-variables ()
-  (setq TRR:select-text-file
-        (expand-file-name (if TRR:japanese "CONTENTS.ja" "CONTENTS") TRR:directory)))
-
 ;;; load files
 (require 'trr-mesg)
 (require 'trr-files)
@@ -257,7 +253,6 @@ and be writable by `update-game-score' helper program. "
 ;;;###autoload
 (defun trr ()
   "Start TRR."
-  (TRR:initiate-filename-variables)
   (interactive)
   (or TRR:prev-win-conf
       (setq TRR:prev-win-conf (current-window-configuration)))
@@ -297,6 +292,8 @@ and be writable by `update-game-score' helper program. "
 
 (defun TRR:start ()
   (message (if TRR:japanese "ちょっと待って..." "Wait a moment!"))
+  (setq TRR:select-text-file
+        (expand-file-name (if TRR:japanese "CONTENTS.ja" "CONTENTS") TRR:directory))
   (setq TRR:secret-flag nil)
   (setq TRR:random-flag t)
   (setq TRR:typist-flag nil)
