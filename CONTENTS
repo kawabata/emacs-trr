@@ -5,17 +5,17 @@
 # form: Title Level Comment file-name ID
 # where IDs must differ from any other ID.
 
-# ex. Golden_Goose	easy	one_of_grim's golden.goose.txt GG
+# ex. Golden_Goose  easy  one_of_grim's golden.goose.txt GG
 # note: notice that each element must not have space or tab.
 
 # The entries begin at the next line.
-ICCAD                   ふつう          推奨       Iccad_90 IC
-日本国憲法		やや難		安定してる The_Constitution_Of_JAPAN CJ
-合衆国憲法		ふつう		見出しが多い Constitution_of_the_USA CA
+ICCAD                   Normal          Recommend             Iccad_90 IC
+Japan_Constitution      Hard            Stable                The_Constitution_Of_JAPAN CJ
+USA_Constitution        Normal          Lots_of_headers       Constitution_of_the_USA CA
 
 # more text from debian maintainer
-C			やや難		C言語		C_programs TR 
-Emacs_Lisp		やや難		括弧が多い	Elisp_programs EL
-Java      	 	やや難		Java言語	Java_programs JV
-Ocaml			やや難		いくつかの記号  Ocaml_programs OC
-Python			ふつう		Python言語	Python_programs PY
+C                       Hard            C_programs            C_programs TR
+Emacs_Lisp              Hard            Lots_of_parentheses   Elisp_programs EL
+Java                    Hard            Java_programs         Java_programs JV
+Ocaml                   Hard            Some_symbols          Ocaml_programs OC
+Python                  Normal          Python_programs       Python_programs PY

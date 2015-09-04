@@ -230,10 +230,10 @@ and be writable by `update-game-score' helper program. "
     (setq num (+ (/ num1 2) (/ num2 2)))
     (% num TRR:number-of-text-lines)))
 
-
-;; files used by TRR
-(defvar TRR:update-program (expand-file-name "update-game-score" exec-directory))
-(defvar TRR:select-text-file (expand-file-name "CONTENTS" TRR:directory))
+(defun TRR:initiate-filename-variables ()
+  ;; files used by TRR
+  (defvar TRR:update-program (expand-file-name "update-game-score" exec-directory))
+  (defvar TRR:select-text-file (expand-file-name (if TRR:japanese "CONTENTS.ja" "CONTENTS") TRR:directory)))
 
 ;;; load files
 (require 'trr-mesg)
@@ -254,6 +254,7 @@ and be writable by `update-game-score' helper program. "
 ;;;###autoload
 (defun trr ()
   "Start TRR."
+  (TRR:initiate-filename-variables)
   (interactive)
   (or TRR:prev-win-conf
       (setq TRR:prev-win-conf (current-window-configuration)))
