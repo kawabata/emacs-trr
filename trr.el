@@ -72,7 +72,7 @@
 (defcustom TRR:ding-when-miss t "Whether enabled to `ding' when miss type."
   :type 'boolean :group 'TRR)		; 間違えた時に ding するかどうか
 
-(defcustom TRR:japanese t "If t, TRR talk to you in Japanese."
+(defcustom TRR:japanese nil "If t, TRR talk to you in Japanese."
   :type 'boolean :group 'TRR)		; TRRのメッセージを日本語にするかどうか
 
 (defcustom TRR:use-update-program nil "If t, use `update-game-score'
