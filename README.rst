@@ -23,3 +23,9 @@ If you're `El-Get`_ user, just add below in your emacs config file::
 
 
 .. _El-Get: https://github.com/dimitri/el-get
+
+
+License
+=======
+| Copyright (C) 1996 YAMAMOTO Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
+| Released under GNU Emacs General Public License
