@@ -26,6 +26,14 @@ If you're `El-Get`_ user, just add below in your emacs config file::
 .. _El-Get: https://github.com/dimitri/el-get
 
 
+Usage
+=====
+
+Run below to play trr::
+
+    $ emacs -f trr
+
+
 License
 =======
 | Copyright (C) 1996 YAMAMOTO Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
