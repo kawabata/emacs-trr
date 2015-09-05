@@ -183,9 +183,11 @@ and be writable by `update-game-score' helper program. "
 					; trr-message.elで使用する
 
 ;; other variables
-(defvar TRR:directory
+(defcustom TRR:directory
   (file-name-directory (or load-file-name
-                           buffer-file-name)))
+                           buffer-file-name))
+  "Directory where text contents are stored."
+  :type 'directory :group 'TRR)
 
 (defvar TRR:number-of-text-lines 0 "(the number of lines in text) - 18")
 					; テキストの行数 - 18
@@ -531,9 +533,10 @@ HighScore: %dpts, total times: %dtimes, total time: %dmin\n")
 	       TRR:total-times
 	       (/ TRR:total-time 60)))
       (and window-system
-	   TRR:graph-color-name
+	   ;; TRR:graph-color-name
 	   (put-text-property (point-min) (point) 'face
-			      TRR:top-face-name))
+			      ;;TRR:top-face-name))
+			      'TRR:graph-face))
       (if TRR:japanese
 	  (insert (concat (TRR:current-trr)
 			  "用での "
