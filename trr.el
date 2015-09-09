@@ -7,8 +7,7 @@
 ;;	INAMURA You <inamura@icot.or.jp>
 ;;		*Original Author
 ;; Created: 1 July 1996
-;; Modified: 2013-11-15
-;; Version: 1.0 beta5
+;; Modified: 2015-09-08
 ;; Keywords: games faces
 
 ;;; Commentary:
@@ -758,3 +757,7 @@ speed    : %4d\n\
 
 (provide 'trr)
 ;;; trr.el ends here
+
+;; Local Variables:
+;; time-stamp-pattern: "12/Modified:[ \t]+%:y-%02m-%02d\\\\?\n"
+;; End:
