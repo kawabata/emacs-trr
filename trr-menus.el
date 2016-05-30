@@ -1,10 +1,10 @@
 ;;; trr-menus - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 
-;; This file is a part of TRR, a type training package for GNU Emacs.
+;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
 
 ;; answer getting function
-(defun TRR:get-answer (string1 string2 max)
+(defun trr-get-answer (string1 string2 max)
   (let ((answer (string-to-number (read-from-minibuffer string1))))
     (while (or (<= answer 0) (> answer max))
       (message string2)
@@ -12,12 +12,12 @@
       (setq answer (string-to-number (read-from-minibuffer string1))))
     answer))
 
-(defun TRR:select-text ()
+(defun trr-select-text ()
   "Menus definition."
   (delete-other-windows)
-  (switch-to-buffer (get-buffer-create (TRR:trainer-menu-buffer)))
+  (switch-to-buffer (get-buffer-create (trr-trainer-menu-buffer)))
   (erase-buffer)
-  (insert-file-contents TRR:select-text-file)
+  (insert-file-contents trr-select-text-file)
   (untabify (point-min) (point-max))
   (goto-char (point-min))
   (let ((kill-whole-line t))
@@ -41,66 +41,66 @@
       (setq num (1+ num)))
     (setq max-num num)
     (goto-char (point-min))
-    (if TRR:japanese
-	(insert (TRR:current-trr)
+    (if trr-japanese
+	(insert (trr-current-trr)
 		"向けタイプトレーナー：\n\nテキストの選択：\n")
-      (insert "TRR for " (TRR:current-trr) ": \n\nChoose a text: \n"))
+      (insert "trr for " (trr-current-trr) ": \n\nChoose a text: \n"))
     (goto-char (point-max))
-    (insert (if TRR:japanese
+    (insert (if trr-japanese
 		(concat "\n\n  何か入れて欲しい document があれば\n "
-			TRR:installator
+			trr-installator
 			" までお問い合わせ下さい。\n")
-	      (concat "\n  If you have some document to use in TRR, consult with\n "
-		      TRR:installator
+	      (concat "\n  If you have some document to use in trr, consult with\n "
+		      trr-installator
 		      "\n")))
-    (insert (if TRR:japanese
-		"\n各種の設定：\n  97. TRRの終了\n  98. 設定値の変更\n"
-	      "\nSet up: \n  97. Quit TRR\n  98. Change options.\n"))
-    (if (not TRR:skip-session-flag)
-	(insert (if TRR:japanese
+    (insert (if trr-japanese
+		"\n各種の設定：\n  97. trrの終了\n  98. 設定値の変更\n"
+	      "\nSet up: \n  97. Quit trr\n  98. Change options.\n"))
+    (if (not trr-skip-session-flag)
+	(insert (if trr-japanese
 		    "  99. テキスト選択後メニュー画面に移行\n"
 		  "  99. move to menu after choose a text\n"))
-      (insert (if TRR:japanese
+      (insert (if trr-japanese
 		  "\nテキスト選択後メニュー画面に移行"
 		"\nmove to menu after choose a text")))
     (setq num
-	  (if TRR:japanese
-	      (TRR:get-answer "どれにする？ " "はっきりしなさい！" 99)
-	    (TRR:get-answer "Input an integer: " "Don't hesitate!" 99)))
+	  (if trr-japanese
+	      (trr-get-answer "どれにする？ " "はっきりしなさい！" 99)
+	    (trr-get-answer "Input an integer: " "Don't hesitate!" 99)))
     (if (and (or (< num 0) (> num max-num))
 	     (/= num 97)
 	     (/= num 98)
-	     (or TRR:skip-session-flag
+	     (or trr-skip-session-flag
 		 (/= num 99)))
-	(setq num (if TRR:japanese
-		      (TRR:get-answer "もう一度選んで "
+	(setq num (if trr-japanese
+		      (trr-get-answer "もう一度選んで "
 				      "テキストしか選べないわ"
 				      max-num)
-		    (TRR:get-answer "Choose again: "
+		    (trr-get-answer "Choose again: "
 				    "Text is the only way left to you!"
 				    max-num))))
     (cond
-     ((= num 97) (setq TRR:quit-flag t))
-     ((= num 98) (TRR:change-flag) (TRR:select-text))
+     ((= num 97) (setq trr-quit-flag t))
+     ((= num 98) (trr-change-flag) (trr-select-text))
      ((= num 99)
-      (setq TRR:skip-session-flag t)
-      (TRR:select-text))
+      (setq trr-skip-session-flag t)
+      (trr-select-text))
      (t
-      (TRR:decide-trr-text num)
-      (TRR:initiate-files)
-      (TRR:initiate-variables)
-      (TRR:print-log)
-      (TRR:print-data)
+      (trr-decide-trr-text num)
+      (trr-initiate-files)
+      (trr-initiate-variables)
+      (trr-print-log)
+      (trr-print-data)
       (bury-buffer)
-      (set-window-configuration TRR:win-conf)))))
+      (set-window-configuration trr-win-conf)))))
 
 
-(defun TRR:change-flag (&optional loop)
+(defun trr-change-flag (&optional loop)
   (delete-other-windows)
-  (switch-to-buffer (get-buffer-create (TRR:trainer-menu-buffer)))
+  (switch-to-buffer (get-buffer-create (trr-trainer-menu-buffer)))
   (erase-buffer)
   (let (num)
-    (insert (if TRR:japanese
+    (insert (if trr-japanese
 		(concat "\
 次の中から選んで下さい。\n\
 \n\
@@ -119,101 +119,101 @@
    初級者向けのタイプトレーナと同じであるが、\n\
    ハイスコアの登録を行なわない\n\
 \n"
-			(if TRR:return-is-space
+			(if trr-return-is-space
 			    "5. [toggle] 行末のリターンはスペースで代替できる\n\n"
 			  "5. [toggle] 行末のリターンはリターンを押さなければならない\n\n")
 			"\
 6. [toggle] メッセージは日本語で表示\n\n"
-			(if TRR:ding-when-miss
+			(if trr-ding-when-miss
 			    "7. [toggle] 間違えた時に ding(音を鳴らす) する\n\n"
 			  "7. [toggle] 間違えた時に ding(音を鳴らす) しない\n\n")
-			(if TRR:un-hyphenate
+			(if trr-un-hyphenate
 			    "8. [toggle] ハイフネートされた単語を元に戻す\n\n"
 			  "8. [toggle] ハイフネーションを残したままにする\n\n")
 			"9. 最初のメニューに戻る\n\n")
 	      (concat "Select a number (1 - 9)\n\n\
-1. TRR for Novice.\n\
+1. trr for Novice.\n\
 The function which evaluate your score is,\n\
 (key - (wrong * 10)) * 60 / time\n\
 where key is the number of your key stroke,\n\
 wrong is the number of your miss type, and\n\
 time is the seconds that is taken your finishing typing the text.\n\
-In every STEP, TRR shows the same text.\n\
+In every STEP, trr shows the same text.\n\
 \n\
-2. TRR for Trainee.\n\
+2. trr for Trainee.\n\
 The function which evaluate your score is the same as Novice.\n\
 This is the default level.\n\
 \n\
-3. TRR for Typist.\n\
+3. trr for Typist.\n\
 The function which evaluate your score is,\n\
 (key - (wrong * 50)) * 60 / time\n\
 In this level you have to type much more than Trainee or Novice.\n\
 \n\
-4. TRR in Secret mode.\n\
+4. trr in Secret mode.\n\
 same as Novice, except that your score won't be recorded\n\
 in Score-file.\n\n"
-(if TRR:return-is-space
-    "5. If select, TRR will require that you type RET for the return code\n\
+(if trr-return-is-space
+    "5. If select, trr will require that you type RET for the return code\n\
 at the end of a line.\n\n"
-  "5. If select, TRR will allow you to type SPC for the return code\n\
+  "5. If select, trr will allow you to type SPC for the return code\n\
 at the end of a line.\n\n")
 "6. [toggle] Display messages in English\n\n"
-(if TRR:ding-when-miss
-    "7. Make TRR shut when miss-type\n\n"
-  "7. Make TRR ding when miss-type\n\n")
-(if TRR:un-hyphenate
+(if trr-ding-when-miss
+    "7. Make trr shut when miss-type\n\n"
+  "7. Make trr ding when miss-type\n\n")
+(if trr-un-hyphenate
     "8. [toggle] deny hyphenation from text\n"
     "8. [toggle] leave hyphenated words untouched\n")
     "9. Back to top menu\n\n")))
-  (setq num (if TRR:japanese
-                (TRR:get-answer "どれにする？ " "いったいどれにするの？" 9)
-                (TRR:get-answer "which do you want to change? "
+  (setq num (if trr-japanese
+                (trr-get-answer "どれにする？ " "いったいどれにするの？" 9)
+                (trr-get-answer "which do you want to change? "
                                 "Don't waver!" 9)))
   (cond
    ((= num 1)
-    (setq TRR:random-flag nil)
-    (setq TRR:typist-flag nil)
-    (setq TRR:secret-flag nil))
+    (setq trr-random-flag nil)
+    (setq trr-typist-flag nil)
+    (setq trr-secret-flag nil))
    ((= num 2)
-    (setq TRR:random-flag t)
-    (setq TRR:typist-flag nil)
-    (setq TRR:secret-flag nil))
+    (setq trr-random-flag t)
+    (setq trr-typist-flag nil)
+    (setq trr-secret-flag nil))
    ((= num 3)
-    (setq TRR:random-flag t)
-    (setq TRR:typist-flag t)
-    (setq TRR:secret-flag nil))
+    (setq trr-random-flag t)
+    (setq trr-typist-flag t)
+    (setq trr-secret-flag nil))
    ((= num 4)
-    (setq TRR:random-flag nil)
-    (setq TRR:typist-flag nil)
-    (setq TRR:secret-flag t))
+    (setq trr-random-flag nil)
+    (setq trr-typist-flag nil)
+    (setq trr-secret-flag t))
    ((= num 5)
-    (setq TRR:return-is-space (not TRR:return-is-space))
-    (TRR:change-flag t))
+    (setq trr-return-is-space (not trr-return-is-space))
+    (trr-change-flag t))
    ((= num 6)
-    (TRR:finish t)
-    (setq TRR:japanese (not TRR:japanese))
-    (TRR:prepare-buffers)
-    (TRR:change-flag t))
+    (trr-finish t)
+    (setq trr-japanese (not trr-japanese))
+    (trr-prepare-buffers)
+    (trr-change-flag t))
    ((= num 7)
-    (setq TRR:ding-when-miss (not TRR:ding-when-miss))
-    (TRR:change-flag t))
+    (setq trr-ding-when-miss (not trr-ding-when-miss))
+    (trr-change-flag t))
    ((= num 8)
-    (setq TRR:un-hyphenate (not TRR:un-hyphenate))
-    (TRR:change-flag t)))
+    (setq trr-un-hyphenate (not trr-un-hyphenate))
+    (trr-change-flag t)))
   (if (or (not loop) (= num 9))
       (progn
-        (switch-to-buffer (get-buffer-create (TRR:trainer-menu-buffer)))
+        (switch-to-buffer (get-buffer-create (trr-trainer-menu-buffer)))
         (let* ((height (- (window-height) 5))
 	       (text-buffer-height (1+ (- (/ height 2) (% (/ height 2) 3)))))
-          (if TRR:typist-flag
-	      (setq TRR:text-lines (/ (1- (window-height)) 3))
-            (setq TRR:text-lines (/ (1- text-buffer-height) 3))))))))
+          (if trr-typist-flag
+	      (setq trr-text-lines (/ (1- (window-height)) 3))
+            (setq trr-text-lines (/ (1- text-buffer-height) 3))))))))
 
 
-(defun TRR:select-menu ()
-  (set-buffer (get-buffer-create (TRR:trainer-menu-buffer)))
+(defun trr-select-menu ()
+  (set-buffer (get-buffer-create (trr-trainer-menu-buffer)))
   (erase-buffer)
-  (if TRR:japanese
+  (if trr-japanese
       (insert "\
  1. 終了               2. 実行                3. ハイスコア\n\
  4. 平均速度グラフ     5. 平均ミス率グラフ    6. 平均得点グラフ\n\
@@ -224,104 +224,104 @@ at the end of a line.\n\n")
  4. Typing Speed Graph 5. Freq. of Typo Graph  6. Score Graph\n\
  7. Time Graph	       8. Num. of Trial Graph  9. Breaking Score Graph\n\
 10. Past results      11. Choose another text 12. Change options"))
-  (let ((num (if TRR:japanese
-		 (TRR:get-answer "どうするの？ " "はっきりしなさい！" 12)
-	       (TRR:get-answer "What do you want to do? "
+  (let ((num (if trr-japanese
+		 (trr-get-answer "どうするの？ " "はっきりしなさい！" 12)
+	       (trr-get-answer "What do you want to do? "
 			       "Commit yourself!" 12))))
     (cond
-     ((= num 1) (setq TRR:quit-flag t) nil)
+     ((= num 1) (setq trr-quit-flag t) nil)
      ((= num 2)
-      (TRR:read-file) ;  Read next text
+      (trr-read-file) ;  Read next text
       t)
      ((= num 3)
-      (set-window-configuration TRR:win-conf-display)
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:show-ranking)
-      (TRR:select-menu))
+      (set-window-configuration trr-win-conf-display)
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-show-ranking)
+      (trr-select-menu))
      ((= num 4)
-      (set-window-configuration TRR:win-conf-display)
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:get-graph-points)
-      (TRR:write-graph TRR:list-of-speed TRR:skipped-step
-		       (concat (if TRR:japanese
+      (set-window-configuration trr-win-conf-display)
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-get-graph-points)
+      (trr-write-graph trr-list-of-speed trr-skipped-step
+		       (concat (if trr-japanese
 				   "ステップ−平均スピード（文字／分）グラフ"
 				 "STEP <-> SPEED(type / minute) Graph")
-			       "\t" TRR:text-name))
-      (TRR:select-menu))
+			       "\t" trr-text-name))
+      (trr-select-menu))
      ((= num 5)
-      (set-window-configuration TRR:win-conf-display)
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:get-graph-points)
-      (TRR:write-graph TRR:list-of-miss TRR:skipped-step
-		       (concat (if TRR:japanese
+      (set-window-configuration trr-win-conf-display)
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-get-graph-points)
+      (trr-write-graph trr-list-of-miss trr-skipped-step
+		       (concat (if trr-japanese
 				   "ステップ−平均ミス率（/1000）グラフ"
 				 "STEP <-> avg.Miss-ratio(/1000) Graph")
-			       "\t" TRR:text-name))
-      (TRR:select-menu))
+			       "\t" trr-text-name))
+      (trr-select-menu))
      ((= num 6)
-      (set-window-configuration TRR:win-conf-display)
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:get-graph-points)
-      (TRR:write-graph TRR:list-of-average TRR:skipped-step
-		       (concat (if TRR:japanese
+      (set-window-configuration trr-win-conf-display)
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-get-graph-points)
+      (trr-write-graph trr-list-of-average trr-skipped-step
+		       (concat (if trr-japanese
 				   "ステップ−平均得点グラフ"
 				 "STEP <-> avg.SCORE Graph")
-			       "\t" TRR:text-name))
-      (TRR:select-menu))
+			       "\t" trr-text-name))
+      (trr-select-menu))
      ((= num 7)
-      (set-window-configuration TRR:win-conf-display)
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:get-graph-points)
-      (TRR:write-graph TRR:list-of-time TRR:skipped-step
-		       (concat (if TRR:japanese
+      (set-window-configuration trr-win-conf-display)
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-get-graph-points)
+      (trr-write-graph trr-list-of-time trr-skipped-step
+		       (concat (if trr-japanese
 				   "ステップ−実行時間（分）グラフ"
 				 "STEP <-> TIME(min) Graph")
-			       "\t" TRR:text-name))
-      (TRR:select-menu))
+			       "\t" trr-text-name))
+      (trr-select-menu))
      ((= num 8)
-      (set-window-configuration TRR:win-conf-display)
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:get-graph-points)
-      (TRR:write-graph TRR:list-of-times TRR:skipped-step
-		       (concat (if TRR:japanese
+      (set-window-configuration trr-win-conf-display)
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-get-graph-points)
+      (trr-write-graph trr-list-of-times trr-skipped-step
+		       (concat (if trr-japanese
 				   "ステップ−実行回数グラフ"
-				 "STEP <-> times (the number of execution of TRR) Graph")
-			       "\t" TRR:text-name))
-      (TRR:select-menu))
+				 "STEP <-> times (the number of execution of trr) Graph")
+			       "\t" trr-text-name))
+      (trr-select-menu))
      ((= num 9)
-      (set-window-configuration TRR:win-conf-display)
-      (set-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:get-graph-points)
-      (TRR:write-graph TRR:list-of-value TRR:skipped-step
-		       (concat (if TRR:japanese
+      (set-window-configuration trr-win-conf-display)
+      (set-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-get-graph-points)
+      (trr-write-graph trr-list-of-value trr-skipped-step
+		       (concat (if trr-japanese
 				   "ステップ−突破点数グラフ"
 				 "STEP <-> ACHIEVEMENT_SCORE Graph")
-			       "\t" TRR:text-name))
-      (TRR:select-menu))
+			       "\t" trr-text-name))
+      (trr-select-menu))
      ((= num 10)
-      (set-window-configuration TRR:win-conf-display)
-      (set-buffer (get-buffer-create (TRR:display-buffer)))
-      (TRR:print-log-for-display)
-      (TRR:select-menu))
+      (set-window-configuration trr-win-conf-display)
+      (set-buffer (get-buffer-create (trr-display-buffer)))
+      (trr-print-log-for-display)
+      (trr-select-menu))
      ((= num 11)
-      (TRR:save-file (TRR:record-buffer) TRR:record-file)
-      (TRR:kill-file TRR:record-file)
-      (TRR:kill-file TRR:score-file)
-      (TRR:kill-file TRR:record-file)
-      (or (zerop (length TRR:text-file-buffer))
-	  (kill-buffer TRR:text-file-buffer))
-      (TRR:select-text)
-      (not TRR:quit-flag))
+      (trr-save-file (trr-record-buffer) trr-record-file)
+      (trr-kill-file trr-record-file)
+      (trr-kill-file trr-score-file)
+      (trr-kill-file trr-record-file)
+      (or (zerop (length trr-text-file-buffer))
+	  (kill-buffer trr-text-file-buffer))
+      (trr-select-text)
+      (not trr-quit-flag))
      ((= num 12)
-      (TRR:save-file (TRR:record-buffer) TRR:record-file)
-      (TRR:kill-file TRR:record-file)
-      (TRR:kill-file TRR:score-file)
-      (TRR:kill-file TRR:record-file)
-      (or (zerop (length TRR:text-file-buffer))
-	  (kill-buffer TRR:text-file-buffer))
-      (TRR:change-flag)
-      (TRR:select-text)
-      (not TRR:quit-flag))
+      (trr-save-file (trr-record-buffer) trr-record-file)
+      (trr-kill-file trr-record-file)
+      (trr-kill-file trr-score-file)
+      (trr-kill-file trr-record-file)
+      (or (zerop (length trr-text-file-buffer))
+	  (kill-buffer trr-text-file-buffer))
+      (trr-change-flag)
+      (trr-select-text)
+      (not trr-quit-flag))
      )))
 
 

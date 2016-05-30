@@ -3,13 +3,13 @@
 @c %**start of header
 @documentencoding UTF-8
 @setfilename trr.info
-@settitle TRR マニュアル
+@settitle trr マニュアル
 @setchapternewpage odd
 @c %**end of header
 @set version 1.0
 
 @titlepage
-@title TRR マニュアル for version @value{version}
+@title trr マニュアル for version @value{version}
 @author 山本 泰宇
 @page
 @vskip 0pt plus 1filll
@@ -22,22 +22,22 @@ Copyright @copyright{} 1996 Yamamoto Hirotaka
 @comment  node-name,  next,  previous,  up
 
 これは GNU Emacs 上でタイピング能力を向上させるためのパッケージです。
-TRR の著作権に関しては GNU の GENERAL PUBLIC LICENSE
+trr の著作権に関しては GNU の GENERAL PUBLIC LICENSE
 の version 2 もしくはそれ以降に準じるものとします。
 @end ifinfo
 
 @menu
-* History::                     TRR の歴史
+* History::                     trr の歴史
 * Installation::                
 * How to play::                 さあ始めよう
 * Further more::                詳しい説明を読んでみよう
-* How to customize::            TRR を料理しちゃおう!
+* How to customize::            trr を料理しちゃおう!
 * Index::                       
 @end menu
 
 @node History
 @comment  node-name,  next,  previous,  up
-@chapter TRR の歴史
+@chapter trr の歴史
 @cindex History
 
 @section The birth of trr
@@ -89,8 +89,8 @@ trrへの人気は絶大なものとなり、第５世代コンピュータプ�
   これは長らく親しまれてきたが、残念ながらNemacs上でしか動作しなかっ
 たため、Emacs 19 が世に広まるにつれ徐々に忘れられ始めてしまった。そ
 こで東大情報科学科の山本泰宇(著者)がNemacs版のコードを全面的に見直す
-と共に、英語メッセージ表示などの機能を追加したTRR19を1996年に発表した。
-@cindex TRR19
+と共に、英語メッセージ表示などの機能を追加したtrr19を1996年に発表した。
+@cindex trr19
 
 @node Installation
 @comment  node-name,  next,  previous,  up
@@ -103,14 +103,14 @@ trrへの人気は絶大なものとなり、第５世代コンピュータプ�
 
 
 @menu
-* unpack the package::          TRR を展開する
-* additional texts::            好きな text を TRR で使う
+* unpack the package::          trr を展開する
+* additional texts::            好きな text を trr で使う
 * autoload::                    
 @end menu
 
 @node unpack the package
 @comment  node-name,  next,  previous,  up
-@section TRR を展開する
+@section trr を展開する
 @cindex unpack
 
 例えば以下のようにして下さい。
@@ -127,13 +127,13 @@ GNU tar を使っているなら
 
 @node additional texts
 @comment  node-name,  next,  previous,  up
-@section 好きな text を TRR で使う
+@section 好きな text を trr で使う
 @cindex add text
 @cindex text
 @cindex CONTENTS
 
-TRR は日本国憲法と合衆国憲法がいっしょに配布されています。
-これら以外にも自由に好きな text を使って TRR を行なうことが出来ます。
+trr は日本国憲法と合衆国憲法がいっしょに配布されています。
+これら以外にも自由に好きな text を使って trr を行なうことが出来ます。
 
 以下のような条件を満たしていることを確認して下さい。
 
@@ -172,7 +172,7 @@ text file はいつでも好きな時に上のようにして付け加えられ�
 @section autoload
 @cindex autoload
 
-最後に TRR を autoload 出来るようにします。
+最後に trr を autoload 出来るようにします。
 以下のいずれかを選んで下さい。
 なお以下では @file{(trrdir)} は Makefile で指定した trrdir の
 こととします。
@@ -198,7 +198,7 @@ trr を実行できます。
 この場合使いたいユーザーに使い方を教えてあげて下さい。
 @end itemize
 
-You are done! 以上で @kbd{M-x trr} と type すれば TRR が出来るはずです。@*
+You are done! 以上で @kbd{M-x trr} と type すれば trr が出来るはずです。@*
 
 @node How to play
 @comment node-name,     next,           previous, up
@@ -207,7 +207,7 @@ You are done! 以上で @kbd{M-x trr} と type すれば TRR が出来るはず�
 @cindex play
 @cindex How to play
 
-TRR は以下のような流れで実行できます。
+trr は以下のような流れで実行できます。
 
 @enumerate
 @item
@@ -235,9 +235,9 @@ menu が出ますので続けたければ 2, もう終りにするのなら 1 �
 
 @node Further more
 @comment node-name,     next,           previous, up
-@chapter もっと TRR を知ろう!
+@chapter もっと trr を知ろう!
 
-TRR にはいろいろな機能が備わっています。
+trr にはいろいろな機能が備わっています。
 
 @menu
 * play level::                  
@@ -250,20 +250,20 @@ TRR にはいろいろな機能が備わっています。
 @section プレイレベル
 @cindex level
 
-TRR は player の level に応じた4つの mode を持っています。
+trr は player の level に応じた4つの mode を持っています。
 これは menu の @samp{設定の変更} で変えることが出来ます。
 
 @table @samp
-@item 初心者用 TRR
+@item 初心者用 trr
 表示される text の量は中級者用と同じですが、
 session を繰り返しても同じ text が表示されます。
 得点は初心者用の file に記録されます。
 
-@item 中級者用 TRR
+@item 中級者用 trr
 default ではこの mode になっています。
-これで300点が出せるようになればあなたもなかなかの TRRer でしょう。
+これで300点が出せるようになればあなたもなかなかの trrer でしょう。
 
-@item 上級者用 TRR
+@item 上級者用 trr
 ここは初心者が生半可な気持ちで入ってはいけません。
 text は full screen で出てきて、しかも減点率が
 初心者もしくは中級者用の5倍!!@*
@@ -310,17 +310,17 @@ text 中にある hyphenate された単語を元に戻すかどうかを切替�
 @section 特殊なキー操作
 @cindex key
 
-TRR の typing 画面では次のような特殊なキー操作が許されています。
+trr の typing 画面では次のような特殊なキー操作が許されています。
 
 @table @key
 @item C-l
 @cindex refresh screen
-TRR を -nw で起動したりすると biff 等で画面が乱れることがあります。
+trr を -nw で起動したりすると biff 等で画面が乱れることがあります。
 そういった時に @key{C-l} を押せば画面を redraw します。
 
 @item C-c
 @cindex quit
-session を始めると TRR は typing のキー入力以外禁止します。
+session を始めると trr は typing のキー入力以外禁止します。
 途中で止めたくなった時は @key{C-c} を押すと即座に終了します。
 
 @end table
@@ -330,7 +330,7 @@ session を始めると TRR は typing のキー入力以外禁止します。
 @comment node-name,     next,           previous, up
 @chapter 使いやすくしよう
 
-TRR は @file{.emacs} に書くことで User にさらに細かい設定の
+trr は @file{.emacs} に書くことで User にさらに細かい設定の
 手段を提供しています。
 
 @menu
@@ -349,41 +349,41 @@ menu の @samp{設定の変更} で毎回設定を変更するのが煩わしい
 
 @table @samp
 @item return
-@code{(setq TRR:return-is-space t)} とすれば default で
+@code{(setq trr-return-is-space t)} とすれば default で
 @key{return} キーを @key{space} キーで代用できます。
-@code{(setq TRR:return-is-space nil)} なら出来ません。
+@code{(setq trr-return-is-space nil)} なら出来ません。
 
 @item language
-@code{(setq TRR:japanese nil)} とすると message が default で
+@code{(setq trr-japanese nil)} とすると message が default で
 英語の表示になります。t なら日本語です。
 
 @item ding
-@code{(setq TRR:ding-when-miss nil)} とすれば miss したときに
+@code{(setq trr-ding-when-miss nil)} とすれば miss したときに
 音がなりません。t だとなるようになります。
 
 @item hyphenate
-@code{(setq TRR:un-hyphenate nil)} とするとハイフネーションを
+@code{(setq trr-un-hyphenate nil)} とするとハイフネーションを
 戻さなくなります。t だとハイフネーションを消します。
 @end table
 
 @node default directory
 @comment  node-name,  next,  previous,  up
-@section TRR の default directory の変更
+@section trr の default directory の変更
 @cindex directory
 
-TRR は通常、プレーヤーの記録とゲームスコアを
+trr は通常、プレーヤーの記録とゲームスコアを
 @code{~/.emacs.d/games/trrscores/} に保存しますが、変更したい場合はそれぞ
-れ、@code{(setq TRR:record-dir XXXXX)} および@code{(setq TRR:score-dir
-XXXXX)} で変更できます。 @code{TRR:record-dir} を、update-game-score を使っ
-て更新する場合は  @code{(setq TRR:use-update-program t)} としてください。
+れ、@code{(setq trr-record-dir XXXXX)} および@code{(setq trr-score-dir
+XXXXX)} で変更できます。 @code{trr-record-dir} を、update-game-score を使っ
+て更新する場合は  @code{(setq trr-use-update-program t)} としてください。
 
-@c TRR は通常 install 時に正しい directory を与えられています。
+@c trr は通常 install 時に正しい directory を与えられています。
 @c しかしなんらかの理由でそれを変更したい場合環境変数を
 @c 与えれば変えられます。
 
 @c elc, text, record 等が入っている directory を与えるには
-@c 環境変数 @var{TRRDIR} を定義します。trr_update, trr_format が
-@c 入っている directory は @var{TRRBINDIR} です。
+@c 環境変数 @var{trrDIR} を定義します。trr_update, trr_format が
+@c 入っている directory は @var{trrBINDIR} です。
 
 @node color
 @comment  node-name,  next,  previous,  up
@@ -391,27 +391,27 @@ XXXXX)} で変更できます。 @code{TRR:record-dir} を、update-game-score �
 @cindex color
 
 default の色指定は明るい背景用になっています。
-これらは、@code{M-x customize-group TRR} で変更できます。
+これらは、@code{M-x customize-group trr} で変更できます。
 @*
 
 @table @samp
 @item textの色
-@code{(set-face-foreground 'TRR:text-face COLOR)} の color に
+@code{(set-face-foreground 'trr-text-face COLOR)} の color に
 色を表す文字列を入れると打つべき text の色がその色になります。
 @var{COLOR} に nil を指定すれば色がつきません。
 以下も同様の指定方法です。
 
 @item 正しく打った文字の色
-@code{(set-face-foreground 'TRR:correct-face COLOR)} で指定できます。
+@code{(set-face-foreground 'trr-correct-face COLOR)} で指定できます。
 
 @item 間違えた文字の色
-@code{(set-face-foreground 'TRR:miss-face COLOR)} で指定できます。
+@code{(set-face-foreground 'trr-miss-face COLOR)} で指定できます。
 
 @item グラフの星の色
-@code{(set-face-foreground 'TRR:graph-face COLOR)} で指定できます。
+@code{(set-face-foreground 'trr-graph-face COLOR)} で指定できます。
 
 @item 自分の名前の背景の色
-@code{(set-face-foreground 'TRR:self-face COLOR)} で指定できます。
+@code{(set-face-foreground 'trr-self-face COLOR)} で指定できます。
 @end table
 @*
 
@@ -420,17 +420,17 @@ default の色指定は明るい背景用になっています。
 @section フック関数
 @cindex hook
 
-TRR は以下のような hook を用意しています。
+trr は以下のような hook を用意しています。
 
 @table @var
-@item TRR:load-hook
-TRR を load する時だけ評価されます。
+@item trr-load-hook
+trr を load する時だけ評価されます。
 
-@item TRR:start-hook
+@item trr-start-hook
 M-x trr を実行する際に評価されます。
 
-@item TRR:end-hook
-TRR を終了する際に評価されます。
+@item trr-end-hook
+trr を終了する際に評価されます。
 
 @end table
 

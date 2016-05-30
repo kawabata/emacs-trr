@@ -32,195 +32,195 @@
 (require 'gamegrid)
 (require 'picture)
 
-(defconst TRR:installator "shuji.narazaki@gmail.com"
+(defconst trr-installator "shuji.narazaki@gmail.com"
   "instllators name or e-mail address")
 
 ;; User Customizable Variables.
 
-(defgroup TRR nil
-  "Play a game of TRR."
-  :prefix "TRR:"
+(defgroup trr nil
+  "Play a game of trr."
+  :prefix "trr-"
   :group 'games)
 
-(defface TRR:text-face '((((background dark)) (:foreground "LightBlue"))
+(defface trr-text-face '((((background dark)) (:foreground "LightBlue"))
                             (t (:foreground "blue")))
-  "Face for text characters." :group 'TRR)
+  "Face for text characters." :group 'trr)
 
-(defface TRR:correct-face '((((background dark)) (:foreground "RoyalBlue"))
+(defface trr-correct-face '((((background dark)) (:foreground "RoyalBlue"))
                             (t (:foreground "RoyalBlue")))
-  "Face for correct typed character." :group 'TRR)
+  "Face for correct typed character." :group 'trr)
 
-(defface TRR:miss-face '((((background dark)) (:foreground "red"))
+(defface trr-miss-face '((((background dark)) (:foreground "red"))
                         (t (:foreground "red")))
-  "Face for correct typed character." :group 'TRR)
+  "Face for correct typed character." :group 'trr)
 
-(defface TRR:graph-face '((((background dark)) (:foreground "blue"))
+(defface trr-graph-face '((((background dark)) (:foreground "blue"))
                         (t (:foreground "blue")))
-  "Face for the stars in Graph." :group 'TRR)
+  "Face for the stars in Graph." :group 'trr)
 
-(defface TRR:self-face '((((background dark)) (:foreground "aquamarine"))
+(defface trr-self-face '((((background dark)) (:foreground "aquamarine"))
                         (t (:foreground "aquamarine")))
-  "Face for highlighting the name of yourself." :group 'TRR)
+  "Face for highlighting the name of yourself." :group 'trr)
 
-(defcustom TRR:un-hyphenate t "Whether deny hyphnenations."
-  :type 'boolean :group 'TRR)		; ハイフネーションを消すかどうか
+(defcustom trr-un-hyphenate t "Whether deny hyphnenations."
+  :type 'boolean :group 'trr)		; ハイフネーションを消すかどうか
 
-(defcustom TRR:return-is-space nil "Whether return & space is equal."
-  :type 'boolean :group 'TRR)		; リターンをスペースで代用するかどうか
+(defcustom trr-return-is-space nil "Whether return & space is equal."
+  :type 'boolean :group 'trr)		; リターンをスペースで代用するかどうか
 
-(defcustom TRR:ding-when-miss t "Whether enabled to `ding' when miss type."
-  :type 'boolean :group 'TRR)		; 間違えた時に ding するかどうか
+(defcustom trr-ding-when-miss t "Whether enabled to `ding' when miss type."
+  :type 'boolean :group 'trr)		; 間違えた時に ding するかどうか
 
-(defcustom TRR:japanese nil "If t, TRR talk to you in Japanese."
-  :type 'boolean :group 'TRR)		; TRRのメッセージを日本語にするかどうか
+(defcustom trr-japanese nil "If t, trr talk to you in Japanese."
+  :type 'boolean :group 'trr)		; trrのメッセージを日本語にするかどうか
 
-(defcustom TRR:use-update-program nil "If t, use `update-game-score'
-program to write score file." :type 'boolean :group 'TRR)
+(defcustom trr-use-update-program nil "If t, use `update-game-score'
+program to write score file." :type 'boolean :group 'trr)
 
-(defcustom TRR:record-dir ; 個人レコード
+(defcustom trr-record-dir ; 個人レコード
   (expand-file-name "trrscores" gamegrid-user-score-file-directory)
   "Directory where personal records are stored."
-  :type 'directory :group 'TRR)
+  :type 'directory :group 'trr)
 
-(defcustom TRR:score-dir  ; グループスコア
+(defcustom trr-score-dir  ; グループスコア
   (expand-file-name "trrscores"
    (or gamegrid-user-score-file-directory shared-game-score-directory))
   "Directory where group score records are stored.
-If `TRR:use-update-program' is t, score files in this directory must exist
+If `trr-use-update-program' is t, score files in this directory must exist
 and be writable by `update-game-score' helper program. "
-  :type 'directory :group 'TRR)
+  :type 'directory :group 'trr)
 
 ;; Hooks
-(defvar TRR:load-hook nil
-  "*This hook is run only when TRR files are loaded.")
-(defvar TRR:start-hook nil
-  "*This hook is run everytime TRR start.")
-(defvar TRR:end-hook nil
-  "*This hook is run when TRR is finished.")
+(defvar trr-load-hook nil
+  "*This hook is run only when trr files are loaded.")
+(defvar trr-start-hook nil
+  "*This hook is run everytime trr start.")
+(defvar trr-end-hook nil
+  "*This hook is run when trr is finished.")
 
-;; TRR flags
-(defvar TRR:start-flag nil "whether TRR is running")
-					; TRRが始まっているかどうか
-(defvar TRR:quit-flag nil "whether TRR will be finished")
-					; TRRを終了させるかどうか
-(defvar TRR:update-flag nil "whether the record is broken")
+;; trr flags
+(defvar trr-start-flag nil "whether trr is running")
+					; trrが始まっているかどうか
+(defvar trr-quit-flag nil "whether trr will be finished")
+					; trrを終了させるかどうか
+(defvar trr-update-flag nil "whether the record is broken")
 					; 記録更新したかどうか
-(defvar TRR:pass-flag nil "whether current-step is passed")
+(defvar trr-pass-flag nil "whether current-step is passed")
 					; ステップをパスしたかどうか
-(defvar TRR:cheat-flag nil "whether TRR text is too easy")
+(defvar trr-cheat-flag nil "whether trr text is too easy")
 					; いんちきしたかどうか
-(defvar TRR:beginner-flag nil "whether this play is the first time")
-					; 初めてTRRをしたかどうか
-(defvar TRR:random-flag t "whether TRR choose the position in file at random")
+(defvar trr-beginner-flag nil "whether this play is the first time")
+					; 初めてtrrをしたかどうか
+(defvar trr-random-flag t "whether trr choose the position in file at random")
 					; 文書の位置をランダムに選ぶかどうか
-(defvar TRR:secret-flag t "whether the record will be updated")
+(defvar trr-secret-flag t "whether the record will be updated")
 					; updateしないかどうか
-(defvar TRR:typist-flag t "whether you are Typist")
+(defvar trr-typist-flag t "whether you are Typist")
 					; タイピストを目指すかどうか
-(defvar TRR:small-window-flag nil "whether the frame is too narrow")
+(defvar trr-small-window-flag nil "whether the frame is too narrow")
 					; ウィンドウが小さいかどうか
-(defvar TRR:skip-session-flag nil "whether TRR skip session")
+(defvar trr-skip-session-flag nil "whether trr skip session")
 					; セッションを実行しないかどうか
 
 ;; Buffer names
-(defun TRR:trainer-menu-buffer ()
-  (if TRR:japanese "タイプ＆メニュー" "Type & Menu"))
-(defun TRR:result-buffer ()
-  (if TRR:japanese "-----結果-----" "----Result----"))
-(defun TRR:data-buffer ()
-  (if TRR:japanese "成績表示" "Display Record"))
-(defun TRR:message-buffer ()
-  (if TRR:japanese "メッセージ" "TRR Message"))
-(defun TRR:log-buffer ()
-  (if TRR:japanese "過去の成績" "Past Records"))
-(defun TRR:graph-buffer ()
-  (if TRR:japanese "グラフ" "Display Graph"))
-(defun TRR:record-buffer ()
-  (if TRR:japanese "実行記録!!" "Result!!"))
-(defun TRR:display-buffer ()
-  (if TRR:japanese "各種表示" "TRR Display"))
-(defvar TRR:text-file-buffer "")
+(defun trr-trainer-menu-buffer ()
+  (if trr-japanese "タイプ＆メニュー" "Type & Menu"))
+(defun trr-result-buffer ()
+  (if trr-japanese "-----結果-----" "----Result----"))
+(defun trr-data-buffer ()
+  (if trr-japanese "成績表示" "Display Record"))
+(defun trr-message-buffer ()
+  (if trr-japanese "メッセージ" "trr Message"))
+(defun trr-log-buffer ()
+  (if trr-japanese "過去の成績" "Past Records"))
+(defun trr-graph-buffer ()
+  (if trr-japanese "グラフ" "Display Graph"))
+(defun trr-record-buffer ()
+  (if trr-japanese "実行記録!!" "Result!!"))
+(defun trr-display-buffer ()
+  (if trr-japanese "各種表示" "trr Display"))
+(defvar trr-text-file-buffer "")
 
 ;; Window Configuration
-(defvar TRR:prev-win-conf    nil)
-(defvar TRR:win-conf         nil)
-(defvar TRR:win-conf-typist  nil)
-(defvar TRR:win-conf-display nil)
+(defvar trr-prev-win-conf    nil)
+(defvar trr-win-conf         nil)
+(defvar trr-win-conf-typist  nil)
+(defvar trr-win-conf-display nil)
 
 ;; Variables for Session
-(defvar TRR:eval               -1 "Score")
+(defvar trr-eval               -1 "Score")
 					; 今回出した点数
-(defvar TRR:whole-char-count   0 "the number of characters of the text")
+(defvar trr-whole-char-count   0 "the number of characters of the text")
 					; テキストの文字数
-(defvar TRR:correct-char-count 0 "the number of correct typed characters")
+(defvar trr-correct-char-count 0 "the number of correct typed characters")
 					; 正しく入力した文字数
-(defvar TRR:start-time         0 "start time for a session")
-					; TRR(1 session)を初めた時間
-(defvar TRR:end-time           0 "end time for a session")
-					; TRR(1 session)を終えた時間
-(defvar TRR:miss-type-ratio    0 "miss type ratio")
+(defvar trr-start-time         0 "start time for a session")
+					; trr(1 session)を初めた時間
+(defvar trr-end-time           0 "end time for a session")
+					; trr(1 session)を終えた時間
+(defvar trr-miss-type-ratio    0 "miss type ratio")
 					; ミス率 (/1000)
-(defvar TRR:type-speed         0 "the number of characters typed per minute")
+(defvar trr-type-speed         0 "the number of characters typed per minute")
 					;タイピング速度（文字数／分）
-(defvar TRR:ch                 0)
+(defvar trr-ch                 0)
 
 ;; Variables for STEP
-(defvar TRR:steps                       0 "current step")
+(defvar trr-steps                       0 "current step")
 					; 現在のステップ
-(defvar TRR:times-of-current-step       0
-  "total times of the execution of TRR in this step")
+(defvar trr-times-of-current-step       0
+  "total times of the execution of trr in this step")
 					; このステップでの実行回数
-(defvar TRR:time-of-current-step        0
-  "total time of the execution of TRR in this step")
+(defvar trr-time-of-current-step        0
+  "total time of the execution of trr in this step")
 					; このステップでの実行時間
-(defvar TRR:whole-chars-of-current-step 0 "the number of typing in this step")
+(defvar trr-whole-chars-of-current-step 0 "the number of typing in this step")
 					; このステップでのタイプ回数
-(defvar TRR:whole-miss-of-current-step  0
+(defvar trr-whole-miss-of-current-step  0
    "the number of miss typing in this step")
 					; このステップでのミスタイプ回数
-(defvar TRR:times-for-message                  0 "used in trr-message.el")
+(defvar trr-times-for-message                  0 "used in trr-message.el")
 					; trr-message.elで使用する
 
 ;; other variables
-(defcustom TRR:directory
+(defcustom trr-directory
   (file-name-directory (or load-file-name
                            buffer-file-name))
   "Directory where text contents are stored."
-  :type 'directory :group 'TRR)
+  :type 'directory :group 'trr)
 
-(defvar TRR:number-of-text-lines 0 "(the number of lines in text) - 18")
+(defvar trr-number-of-text-lines 0 "(the number of lines in text) - 18")
 					; テキストの行数 - 18
-(defvar TRR:text-lines           0
+(defvar trr-text-lines           0
    "the number of lines which should be displayed") ; 表示すべきテキストの行数
-(defvar TRR:total-times          0 "times of execution of TRR")
+(defvar trr-total-times          0 "times of execution of trr")
 					; 今までの実行回数
-(defvar TRR:total-time           0 "total time of execution of TRR")
+(defvar trr-total-time           0 "total time of execution of trr")
 					; 今までの実行時間
-(defvar TRR:high-score           -1 "User's High Score")
+(defvar trr-high-score           -1 "User's High Score")
 					; 今回までの最高得点
-(defvar TRR:high-score-old       -1  "User's previous High Score")
+(defvar trr-high-score-old       -1  "User's previous High Score")
 					; 前回までの最高得点
-(defvar TRR:elapsed-time         0)
-(defvar TRR:debug		 nil)
+(defvar trr-elapsed-time         0)
+(defvar trr-debug		 nil)
 
 ;; other functions
-(defun TRR:history-of-trr ()
-  (if TRR:japanese
+(defun trr-history-of-trr ()
+  (if trr-japanese
       " Original(Pascal&C) -- 守山 貢\n\
  Original Author -- 加藤研児\n\
  Rewritten by -- 山本泰宇 \n\
- TRR Emacs19 Ver.1.1 Apr. 1996"
+ trr Emacs19 Ver.1.1 Apr. 1996"
     " Original(Pascal&C) -- Moriyama Mitugu\n\
  Original Author -- Katou Kenji\n\
  Rewritten by -- Yamamoto Hirotaka\n\
- TRR Emacs19 Ver.1.1 Apr. 1996"))
-(defun TRR:current-trr ()
+ trr Emacs19 Ver.1.1 Apr. 1996"))
+(defun trr-current-trr ()
   (cond
-   (TRR:typist-flag (if TRR:japanese "上級者" "Typist"))
-   (TRR:secret-flag (if TRR:japanese "秘密主義者" "Sealed"))
-   (TRR:random-flag (if TRR:japanese "中級者" "Trainee"))
-   (t               (if TRR:japanese "初級者" "Novice"))))
-(defun TRR:random-num ()
+   (trr-typist-flag (if trr-japanese "上級者" "Typist"))
+   (trr-secret-flag (if trr-japanese "秘密主義者" "Sealed"))
+   (trr-random-flag (if trr-japanese "中級者" "Trainee"))
+   (t               (if trr-japanese "初級者" "Novice"))))
+(defun trr-random-num ()
   (let (num
 	(num1 (random))
 	(num2 (random t)))
@@ -229,11 +229,11 @@ and be writable by `update-game-score' helper program. "
     (if (> num2 0) t
       (setq num2 (- num2)))
     (setq num (+ (/ num1 2) (/ num2 2)))
-    (% num TRR:number-of-text-lines)))
+    (% num trr-number-of-text-lines)))
 
-;; files used by TRR
-(defvar TRR:update-program (expand-file-name "update-game-score" exec-directory))
-(defvar TRR:select-text-file)
+;; files used by trr
+(defvar trr-update-program (expand-file-name "update-game-score" exec-directory))
+(defvar trr-select-text-file)
 
 ;;; load files
 (require 'trr-mesg)
@@ -241,155 +241,155 @@ and be writable by `update-game-score' helper program. "
 (require 'trr-menus)
 (require 'trr-graphs)
 (require 'trr-sess)
-(run-hooks 'TRR:load-hook)
+(run-hooks 'trr-load-hook)
 
 ;;; Scoring function
 ;;; (number_of_type-(number_of_typo*10))*60/seconds  regular
 ;;; (number_of_type-(number_of_typo*50))*60/seconds  for Typist
-(defun TRR:evaluate-point (whole miss time)
-  (if TRR:typist-flag
+(defun trr-evaluate-point (whole miss time)
+  (if trr-typist-flag
       (max 0 (if (= time 0) 0 (/ (* (- whole (* miss 50)) 60) time)))
     (max 0 (if (= time 0) 0 (/ (* (- whole (* miss 10)) 60) time)))))
 
 ;;;###autoload
 (defun trr ()
-  "Start TRR."
+  "Start trr."
   (interactive)
-  (or TRR:prev-win-conf
-      (setq TRR:prev-win-conf (current-window-configuration)))
-  (setq TRR:skip-session-flag nil)
+  (or trr-prev-win-conf
+      (setq trr-prev-win-conf (current-window-configuration)))
+  (setq trr-skip-session-flag nil)
   (delete-other-windows)
   (if (or (< (window-height) 20) (< (window-width) 60))
-      (message (if TRR:japanese
+      (message (if trr-japanese
 		   "ウィンドウが小さすぎるわ。"
-		 "Too narrow to execute TRR!"))
+		 "Too narrow to execute trr!"))
     (unwind-protect
 	(progn
-	  (TRR:start)
-	  (setq TRR:ch 0)
-	  (while (TRR:play-p)
-	    (set-window-configuration TRR:win-conf)
-	    (if TRR:skip-session-flag
+	  (trr-start)
+	  (setq trr-ch 0)
+	  (while (trr-play-p)
+	    (set-window-configuration trr-win-conf)
+	    (if trr-skip-session-flag
 		(progn
-		  (setq TRR:start-flag t)
-		  (setq TRR:skip-session-flag nil)
-		  (set-window-configuration TRR:win-conf-display)
-		  (set-buffer (get-buffer-create (TRR:display-buffer)))
-		  (TRR:print-log-for-display))
-	      (TRR:one-session)
-	      (if (= TRR:ch 3)              ; interrupt!
-		  (setq TRR:quit-flag t)
-		(if (= TRR:ch 18)           ; restart!
+		  (setq trr-start-flag t)
+		  (setq trr-skip-session-flag nil)
+		  (set-window-configuration trr-win-conf-display)
+		  (set-buffer (get-buffer-create (trr-display-buffer)))
+		  (trr-print-log-for-display))
+	      (trr-one-session)
+	      (if (= trr-ch 3)              ; interrupt!
+		  (setq trr-quit-flag t)
+		(if (= trr-ch 18)           ; restart!
 		    (progn
-		      (TRR:finish t)
+		      (trr-finish t)
 		      (trr))
-		  (TRR:update-variables)
-		  (TRR:display-variables-message-graph)
-		  (if (and TRR:update-flag (not TRR:secret-flag))
-		      (TRR:update-score-file TRR:eval))
+		  (trr-update-variables)
+		  (trr-display-variables-message-graph)
+		  (if (and trr-update-flag (not trr-secret-flag))
+		      (trr-update-score-file trr-eval))
 		  (widen))))))
-      (TRR:finish))))
+      (trr-finish))))
 
 
-(defun TRR:start ()
-  (message (if TRR:japanese "ちょっと待って..." "Wait a moment!"))
-  (setq TRR:select-text-file
-        (expand-file-name (if TRR:japanese "CONTENTS.ja" "CONTENTS") TRR:directory))
-  (setq TRR:secret-flag nil)
-  (setq TRR:random-flag t)
-  (setq TRR:typist-flag nil)
-  (setq TRR:start-flag nil)
-  (setq TRR:quit-flag nil)
-  (TRR:prepare-buffers)
+(defun trr-start ()
+  (message (if trr-japanese "ちょっと待って..." "Wait a moment!"))
+  (setq trr-select-text-file
+        (expand-file-name (if trr-japanese "CONTENTS.ja" "CONTENTS") trr-directory))
+  (setq trr-secret-flag nil)
+  (setq trr-random-flag t)
+  (setq trr-typist-flag nil)
+  (setq trr-start-flag nil)
+  (setq trr-quit-flag nil)
+  (trr-prepare-buffers)
   (picture-move-down 1)
   (picture-move-up 1)
-  (run-hooks 'TRR:start-hook))
+  (run-hooks 'trr-start-hook))
 
 
-(defun TRR:play-p ()
-  (and (not TRR:quit-flag)
-       (if (not TRR:start-flag) ; if TRR have not started
-	   (progn (TRR:select-text) ; then let player select text
-		  (not TRR:quit-flag))
-	 (TRR:select-menu) ; if started, let player select menu
-	 (not TRR:quit-flag))))
+(defun trr-play-p ()
+  (and (not trr-quit-flag)
+       (if (not trr-start-flag) ; if trr have not started
+	   (progn (trr-select-text) ; then let player select text
+		  (not trr-quit-flag))
+	 (trr-select-menu) ; if started, let player select menu
+	 (not trr-quit-flag))))
 
 
-(defun TRR:prepare-buffers ()
+(defun trr-prepare-buffers ()
   (delete-other-windows)
-  (switch-to-buffer (get-buffer-create (TRR:trainer-menu-buffer)))
+  (switch-to-buffer (get-buffer-create (trr-trainer-menu-buffer)))
   (setq mode-line-format "   %b")
   (force-mode-line-update)
   (split-window (get-buffer-window (current-buffer)) 5) ; create 4 lines buffer
   (other-window 1)
-  (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
+  (switch-to-buffer (get-buffer-create (trr-display-buffer)))
   (setq mode-line-format "   %b")
   (force-mode-line-update)
-  (setq TRR:win-conf-display (current-window-configuration)) ; 4 lines + others
+  (setq trr-win-conf-display (current-window-configuration)) ; 4 lines + others
   (delete-other-windows)
-  (switch-to-buffer (get-buffer-create (TRR:trainer-menu-buffer)))
-  (setq TRR:win-conf-typist (current-window-configuration)) ; full screen
+  (switch-to-buffer (get-buffer-create (trr-trainer-menu-buffer)))
+  (setq trr-win-conf-typist (current-window-configuration)) ; full screen
   (let* ((height (- (window-height) 5))
 	 (text-buffer-height (1+ (- (/ height 2) (% (/ height 2) 3)))))
-    (if TRR:typist-flag
-	(setq TRR:text-lines (/ (1- (window-height)) 3)); 1 line + 2 null lines
-      (setq TRR:text-lines (/ (1- text-buffer-height) 3))
-      (if (< TRR:text-lines 3)
+    (if trr-typist-flag
+	(setq trr-text-lines (/ (1- (window-height)) 3)); 1 line + 2 null lines
+      (setq trr-text-lines (/ (1- text-buffer-height) 3))
+      (if (< trr-text-lines 3)
 	  (progn
-	    (setq TRR:small-window-flag t)
-	    (setq TRR:text-lines (/ (1- (window-height)) 3)))
-	(setq TRR:small-window-flag nil)))
-    (switch-to-buffer (get-buffer-create (TRR:trainer-menu-buffer)))
+	    (setq trr-small-window-flag t)
+	    (setq trr-text-lines (/ (1- (window-height)) 3)))
+	(setq trr-small-window-flag nil)))
+    (switch-to-buffer (get-buffer-create (trr-trainer-menu-buffer)))
     (split-window (get-buffer-window (current-buffer))
 		  text-buffer-height)
-    (set-buffer (get-buffer-create (TRR:result-buffer)))
+    (set-buffer (get-buffer-create (trr-result-buffer)))
     (setq truncate-lines t)
     (setq mode-line-format "   %b")
     (force-mode-line-update)
     (erase-buffer)
-    (TRR:print-first-message-as-result)
-    (switch-to-buffer-other-window (TRR:result-buffer))
+    (trr-print-first-message-as-result)
+    (switch-to-buffer-other-window (trr-result-buffer))
     (split-window (get-buffer-window (current-buffer)) 5)
     (split-window-horizontally 24)
     (other-window 1)
-    (switch-to-buffer (get-buffer-create (TRR:data-buffer)))
+    (switch-to-buffer (get-buffer-create (trr-data-buffer)))
     (setq truncate-lines t)
     (setq mode-line-format "   %b")
     (force-mode-line-update)
-    (TRR:print-data)
+    (trr-print-data)
     (split-window-horizontally 20)
     (other-window 1)
-    (switch-to-buffer (get-buffer-create (TRR:message-buffer)))
+    (switch-to-buffer (get-buffer-create (trr-message-buffer)))
     (setq mode-line-format "   %b")
     (force-mode-line-update)
     (delete-region (point-min) (point-max))
-    (insert (TRR:history-of-trr))
+    (insert (trr-history-of-trr))
     (other-window 1)
-    (switch-to-buffer (get-buffer-create (TRR:log-buffer)))
+    (switch-to-buffer (get-buffer-create (trr-log-buffer)))
     (setq truncate-lines t)
     (setq mode-line-format "   %b")
     (force-mode-line-update)
     (split-window-horizontally 32)
-    (TRR:print-log)
+    (trr-print-log)
     (other-window 1)
-    (switch-to-buffer (get-buffer-create (TRR:graph-buffer)))
+    (switch-to-buffer (get-buffer-create (trr-graph-buffer)))
     (setq mode-line-format "   %b")
     (force-mode-line-update)
-    (TRR:write-graph TRR:list-of-eval 0
-		     (if TRR:japanese
+    (trr-write-graph trr-list-of-eval 0
+		     (if trr-japanese
 			 "今回の得点グラフ"
 		       "Score Graph for this time"))
     (recenter -1) ; move point to the last line of the graph-buffer
     (other-window 1)
-    (setq TRR:win-conf (current-window-configuration))))
+    (setq trr-win-conf (current-window-configuration))))
 
 
-(defun TRR:print-data ()
+(defun trr-print-data ()
   (save-excursion
-    (switch-to-buffer (get-buffer-create (TRR:data-buffer)))
+    (switch-to-buffer (get-buffer-create (trr-data-buffer)))
     (erase-buffer)
     (insert
-     (format (if TRR:japanese
+     (format (if trr-japanese
 		 "\
  ステップ：%5d\n\
   目  標 ：%5d点\n\
@@ -400,21 +400,21 @@ and be writable by `update-game-score' helper program. "
  Target : %5dpt.\n\
   High  : %5dpt.\n\
   TIMES : %5d")
-	     (1+ TRR:steps)
-	     (* (1+ TRR:steps) 10)
-	     (if (< TRR:high-score 0) 0 TRR:high-score)
-	     TRR:total-times))))
+	     (1+ trr-steps)
+	     (* (1+ trr-steps) 10)
+	     (if (< trr-high-score 0) 0 trr-high-score)
+	     trr-total-times))))
 
 
-(defun TRR:print-log ()
+(defun trr-print-log ()
   (save-excursion
-    (switch-to-buffer (get-buffer-create (TRR:log-buffer)))
+    (switch-to-buffer (get-buffer-create (trr-log-buffer)))
     (erase-buffer)
     (let (curstep       curtimes                curtime
        ;; current step  exec.times by each step total time by each step
 	  wc          mc         curdate     curmiss curspeed curpoint)
        ;; whole count miss count update date
-      (switch-to-buffer (get-buffer-create (TRR:record-buffer)))
+      (switch-to-buffer (get-buffer-create (trr-record-buffer)))
       (goto-char (point-min))
       (setq curstep 1)
       (while (not (eobp)) ; if point is not at the end of the buffer
@@ -441,7 +441,7 @@ and be writable by `update-game-score' helper program. "
 	    (setq j (point)))
 	  (setq curdate (buffer-substring (+ curpoint 29) j)))
 	(forward-line) ; this causes no error if there's no line.
-	(switch-to-buffer (get-buffer-create (TRR:log-buffer)))
+	(switch-to-buffer (get-buffer-create (trr-log-buffer)))
 	(if (not (= wc 0))
 	    (insert (format "%2d:%4d%4d%5d%4d %s\n"
 			    curstep
@@ -451,25 +451,25 @@ and be writable by `update-game-score' helper program. "
 			    curmiss
 			    curdate)))
 	(setq curstep (+ curstep 1))
-	(switch-to-buffer (get-buffer-create (TRR:record-buffer)))))
-      (switch-to-buffer (get-buffer-create (TRR:log-buffer)))
+	(switch-to-buffer (get-buffer-create (trr-record-buffer)))))
+      (switch-to-buffer (get-buffer-create (trr-log-buffer)))
       (forward-line (- 3 (window-height))) ; if lines flood
       (delete-region (point-min) (point)) ; then delete heading records
-      (if TRR:japanese
-	  (insert (TRR:current-trr) "向けタイプトレーナ\n")
-	(insert "TRR for " (TRR:current-trr) "\n"))
-      (if TRR:japanese
+      (if trr-japanese
+	  (insert (trr-current-trr) "向けタイプトレーナ\n")
+	(insert "trr for " (trr-current-trr) "\n"))
+      (if trr-japanese
 	  (insert "step 回  分   速  率   突破日\n")
 	(insert "step tms min spd rate date\n"))))
 
 
-(defun TRR:print-log-for-display ()
+(defun trr-print-log-for-display ()
   (save-excursion
-    (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
+    (switch-to-buffer (get-buffer-create (trr-display-buffer)))
     (erase-buffer)
     (let (curstep curtimes curtime curpoint passpoint
 		  avepoint curmiss curspeed wc mc curdate)
-      (switch-to-buffer (get-buffer-create (TRR:record-buffer)))
+      (switch-to-buffer (get-buffer-create (trr-record-buffer)))
       (goto-char (point-min))
       (setq curstep 1)
       (while (not (eobp))
@@ -494,16 +494,16 @@ and be writable by `update-game-score' helper program. "
 	(setq curspeed
 	      (if (= curtime 0) 0 (/ (* wc 60) curtime)))
 	(setq avepoint (if (= curtime 0) 0
-			 (TRR:evaluate-point wc mc curtime)))
+			 (trr-evaluate-point wc mc curtime)))
 	(let (j)
 	  (save-excursion
 	    (end-of-line)
 	    (setq j (point)))
 	  (setq curdate (buffer-substring (+ curpoint 29) j)))
 	(forward-line)
-	(switch-to-buffer (get-buffer-create (TRR:display-buffer)))
+	(switch-to-buffer (get-buffer-create (trr-display-buffer)))
 	(if (not (= wc 0))
-	    (insert (format (if TRR:japanese
+	    (insert (format (if trr-japanese
 				"\
  %2d:  %3d回  %3d分  %4d字/分  %3d.%d%%  %4d点   %s   %4d\n"
 			      "\
@@ -518,45 +518,45 @@ and be writable by `update-game-score' helper program. "
 			    curdate
 			    passpoint)))
 	(setq curstep (+ curstep 1))
-	(switch-to-buffer (get-buffer-create (TRR:record-buffer)))))
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
+	(switch-to-buffer (get-buffer-create (trr-record-buffer)))))
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
       (forward-line (- 6 (window-height))) ; if lines flood
       (delete-region (point-min) (point)) ; then delete lines.
       (insert
-       (format (if TRR:japanese
+       (format (if trr-japanese
 		   "\
 最高記録：%d点,   総実行回数：%d回,   総実行時間：%d分\n"
 		 "\
 HighScore: %dpts, total times: %dtimes, total time: %dmin\n")
-	       (if (< TRR:high-score 0) 0 TRR:high-score)
-	       TRR:total-times
-	       (/ TRR:total-time 60)))
+	       (if (< trr-high-score 0) 0 trr-high-score)
+	       trr-total-times
+	       (/ trr-total-time 60)))
       (and window-system
-	   ;; TRR:graph-color-name
+	   ;; trr-graph-color-name
 	   (put-text-property (point-min) (point) 'face
-			      ;;TRR:top-face-name))
-			      'TRR:graph-face))
-      (if TRR:japanese
-	  (insert (concat (TRR:current-trr)
+			      ;;trr-top-face-name))
+			      'trr-graph-face))
+      (if trr-japanese
+	  (insert (concat (trr-current-trr)
 			  "用での "
-			  TRR:text-name
+			  trr-text-name
 			  " の記録だよ\n\n\
 step   実行   実行     平均     平均     平均     突破日   突破\n\
        回数   時間   入力速度  ミス率    得点              得点\n\
 ---------------------------------------------------------------\n"))
-	(insert (concat "TRR for "
-			(TRR:current-trr)
+	(insert (concat "trr for "
+			(trr-current-trr)
 			" with "
-			TRR:text-name
+			trr-text-name
 			"\n\n\
 step   times  minutes  speed  miss-ratio avg-score date  the Score\n\
 ------------------------------------------------------------------\n")))))
 
 
-(defun TRR:print-result ()
+(defun trr-print-result ()
   (erase-buffer)
   (insert
-   (format (if TRR:japanese
+   (format (if trr-japanese
 	       "\
  所要時間：%4d 秒\n\
   ミス率 ：%2d.%1d %%\n\
@@ -567,116 +567,116 @@ step   times  minutes  speed  miss-ratio avg-score date  the Score\n\
 miss rate: %2d.%1d %%\n\
 speed    : %4d\n\
   Score  : %4d %s")
-	   TRR:elapsed-time
-	   (/ TRR:miss-type-ratio 10)
-	   (% TRR:miss-type-ratio 10)
-	   TRR:type-speed
-	   TRR:eval
-	   (if TRR:pass-flag " Pass" "Retry")))
+	   trr-elapsed-time
+	   (/ trr-miss-type-ratio 10)
+	   (% trr-miss-type-ratio 10)
+	   trr-type-speed
+	   trr-eval
+	   (if trr-pass-flag " Pass" "Retry")))
   (goto-char (point-min)))
 
 
-(defun TRR:finish (&optional fl)
-  (TRR:kill-buffer (TRR:trainer-menu-buffer))
-  (TRR:kill-buffer (TRR:result-buffer))
-  (TRR:kill-buffer (TRR:graph-buffer))
-  (TRR:kill-buffer (TRR:message-buffer))
-  (TRR:kill-buffer (TRR:data-buffer))
-  (TRR:kill-buffer (TRR:log-buffer))
-  (TRR:kill-buffer (TRR:display-buffer))
-  (TRR:save-file (TRR:record-buffer) TRR:record-file)
-  (TRR:kill-file TRR:record-file)
-  (TRR:kill-file TRR:score-file)
-  (TRR:kill-buffer (TRR:record-buffer))
-  (TRR:kill-file TRR:record-file)
-  (or (zerop (length TRR:text-file-buffer))
-      (kill-buffer (get-buffer-create TRR:text-file-buffer)))
-  (and TRR:prev-win-conf
-       (set-window-configuration TRR:prev-win-conf))
+(defun trr-finish (&optional fl)
+  (trr-kill-buffer (trr-trainer-menu-buffer))
+  (trr-kill-buffer (trr-result-buffer))
+  (trr-kill-buffer (trr-graph-buffer))
+  (trr-kill-buffer (trr-message-buffer))
+  (trr-kill-buffer (trr-data-buffer))
+  (trr-kill-buffer (trr-log-buffer))
+  (trr-kill-buffer (trr-display-buffer))
+  (trr-save-file (trr-record-buffer) trr-record-file)
+  (trr-kill-file trr-record-file)
+  (trr-kill-file trr-score-file)
+  (trr-kill-buffer (trr-record-buffer))
+  (trr-kill-file trr-record-file)
+  (or (zerop (length trr-text-file-buffer))
+      (kill-buffer (get-buffer-create trr-text-file-buffer)))
+  (and trr-prev-win-conf
+       (set-window-configuration trr-prev-win-conf))
   (or fl
       (progn
-	(setq TRR:prev-win-conf nil)
-	(run-hooks 'TRR:end-hook)
-	(message (if TRR:japanese "また会う日まで...." "See you later...")))))
+	(setq trr-prev-win-conf nil)
+	(run-hooks 'trr-end-hook)
+	(message (if trr-japanese "また会う日まで...." "See you later...")))))
 
 
-(defun TRR:kill-buffer (buffer)
+(defun trr-kill-buffer (buffer)
   (let ((tb (get-buffer buffer)))
     (if tb (kill-buffer tb))))
 
 
-(defun TRR:cheat-p ()
-  (setq TRR:cheat-flag
+(defun trr-cheat-p ()
+  (setq trr-cheat-flag
 	(or
-	 (if TRR:typist-flag
-	     (< TRR:whole-char-count 520)
-	   (< TRR:whole-char-count 270))
-	 (> TRR:eval 750))))
+	 (if trr-typist-flag
+	     (< trr-whole-char-count 520)
+	   (< trr-whole-char-count 270))
+	 (> trr-eval 750))))
 
 
-(defun TRR:update-variables ()
-  (setq TRR:quit-flag nil)
-  (let ((started-from (TRR:convert-time-string-to-second TRR:start-time))
-	(ended-at (TRR:convert-time-string-to-second TRR:end-time)))
-    (setq TRR:elapsed-time (- ended-at started-from))
+(defun trr-update-variables ()
+  (setq trr-quit-flag nil)
+  (let ((started-from (trr-convert-time-string-to-second trr-start-time))
+	(ended-at (trr-convert-time-string-to-second trr-end-time)))
+    (setq trr-elapsed-time (- ended-at started-from))
     (if (< ended-at started-from)
-	(setq TRR:elapsed-time (+ TRR:elapsed-time 86400))))
-  (setq TRR:eval
-	(TRR:evaluate-point TRR:whole-char-count
-			    (- TRR:whole-char-count TRR:correct-char-count)
-			    TRR:elapsed-time))
-  (setq TRR:list-of-eval (cons TRR:eval TRR:list-of-eval))
-  (setq TRR:pass-flag
-	(and (>= TRR:eval (* 10 (1+ TRR:steps)))
-	     (not (TRR:cheat-p))))
-  (setq TRR:update-flag
-        (and (or (> TRR:eval TRR:high-score)
-        	 (< TRR:high-score-old 0))
-  	     (not (TRR:cheat-p))))
-  ;; (setq TRR:update-flag t) ; for debugging
-  (setq TRR:beginner-flag (< TRR:high-score-old 0))
-  (if TRR:cheat-flag nil
-    (setq TRR:total-time (+ TRR:total-time TRR:elapsed-time))
-    (setq TRR:total-times (1+ TRR:total-times))
-    (setq TRR:time-of-current-step
-	  (+ TRR:time-of-current-step TRR:elapsed-time))
-    (setq TRR:times-of-current-step (1+ TRR:times-of-current-step))
-    (setq TRR:whole-chars-of-current-step
-	  (+ TRR:whole-char-count TRR:whole-chars-of-current-step))
-    (setq TRR:whole-miss-of-current-step
-	  (+ (- TRR:whole-char-count TRR:correct-char-count)
-	     TRR:whole-miss-of-current-step)))
-  (or TRR:cheat-flag (TRR:write-current-data))
-  (if TRR:pass-flag
+	(setq trr-elapsed-time (+ trr-elapsed-time 86400))))
+  (setq trr-eval
+	(trr-evaluate-point trr-whole-char-count
+			    (- trr-whole-char-count trr-correct-char-count)
+			    trr-elapsed-time))
+  (setq trr-list-of-eval (cons trr-eval trr-list-of-eval))
+  (setq trr-pass-flag
+	(and (>= trr-eval (* 10 (1+ trr-steps)))
+	     (not (trr-cheat-p))))
+  (setq trr-update-flag
+        (and (or (> trr-eval trr-high-score)
+        	 (< trr-high-score-old 0))
+  	     (not (trr-cheat-p))))
+  ;; (setq trr-update-flag t) ; for debugging
+  (setq trr-beginner-flag (< trr-high-score-old 0))
+  (if trr-cheat-flag nil
+    (setq trr-total-time (+ trr-total-time trr-elapsed-time))
+    (setq trr-total-times (1+ trr-total-times))
+    (setq trr-time-of-current-step
+	  (+ trr-time-of-current-step trr-elapsed-time))
+    (setq trr-times-of-current-step (1+ trr-times-of-current-step))
+    (setq trr-whole-chars-of-current-step
+	  (+ trr-whole-char-count trr-whole-chars-of-current-step))
+    (setq trr-whole-miss-of-current-step
+	  (+ (- trr-whole-char-count trr-correct-char-count)
+	     trr-whole-miss-of-current-step)))
+  (or trr-cheat-flag (trr-write-current-data))
+  (if trr-pass-flag
       (progn
-	(setq TRR:times-for-message TRR:times-of-current-step)
-	(setq TRR:time-of-current-step 0)
-	(setq TRR:times-of-current-step 0)
-	(setq TRR:whole-chars-of-current-step 0)
-	(setq TRR:whole-miss-of-current-step 0)
-	(if TRR:beginner-flag
-	    (setq TRR:steps (/ TRR:eval 10))
-	  (setq TRR:steps (1+ TRR:steps)))))
-  (if TRR:update-flag
+	(setq trr-times-for-message trr-times-of-current-step)
+	(setq trr-time-of-current-step 0)
+	(setq trr-times-of-current-step 0)
+	(setq trr-whole-chars-of-current-step 0)
+	(setq trr-whole-miss-of-current-step 0)
+	(if trr-beginner-flag
+	    (setq trr-steps (/ trr-eval 10))
+	  (setq trr-steps (1+ trr-steps)))))
+  (if trr-update-flag
       (progn
-	(setq TRR:high-score-old TRR:high-score)
-	(setq TRR:high-score TRR:eval)))
-  (and (< TRR:high-score-old 0)
-       (not TRR:cheat-flag)
-       (setq TRR:high-score-old TRR:eval))
+	(setq trr-high-score-old trr-high-score)
+	(setq trr-high-score trr-eval)))
+  (and (< trr-high-score-old 0)
+       (not trr-cheat-flag)
+       (setq trr-high-score-old trr-eval))
   (let (diff)
-    (setq diff (- TRR:whole-char-count TRR:correct-char-count))
-    (setq TRR:miss-type-ratio (/ (* 1000 diff) TRR:whole-char-count)))
-  (setq TRR:type-speed (/ (* TRR:whole-char-count 60) TRR:elapsed-time)))
+    (setq diff (- trr-whole-char-count trr-correct-char-count))
+    (setq trr-miss-type-ratio (/ (* 1000 diff) trr-whole-char-count)))
+  (setq trr-type-speed (/ (* trr-whole-char-count 60) trr-elapsed-time)))
 
 
-(defun TRR:write-current-data ()
-  (with-current-buffer (get-buffer-create (TRR:record-buffer))
-    (if TRR:beginner-flag
-	(let ((count (/ TRR:eval 10)))
+(defun trr-write-current-data ()
+  (with-current-buffer (get-buffer-create (trr-record-buffer))
+    (if trr-beginner-flag
+	(let ((count (/ trr-eval 10)))
 	  (erase-buffer)
 	  (while (> count 0)
-	    (if TRR:japanese
+	    (if trr-japanese
 		(insert "  0    0      0      0     0 ふぁいと!\n")
 	      (insert "  0    0      0      0     0 cheers!  \n"))
 	    (setq count (1- count)))))
@@ -684,59 +684,59 @@ speed    : %4d\n\
     (forward-line -1)
     (delete-region (point) (point-max))
     (insert (format "%3d %4d %6d %6d %5d %s\n"
-		    TRR:eval
-		    TRR:times-of-current-step
-		    TRR:time-of-current-step
-		    TRR:whole-chars-of-current-step
-		    TRR:whole-miss-of-current-step
-		    (TRR:get-date)))
-    (if TRR:pass-flag ; if current step is passed, new entry should be added.
-	(if TRR:japanese
+		    trr-eval
+		    trr-times-of-current-step
+		    trr-time-of-current-step
+		    trr-whole-chars-of-current-step
+		    trr-whole-miss-of-current-step
+		    (trr-get-date)))
+    (if trr-pass-flag ; if current step is passed, new entry should be added.
+	(if trr-japanese
 	    (insert "  0    0      0      0     0 ふぁいと!\n")
 	  (insert "  0    0      0      0     0 cheers!  \n")))))
 
 
-(defun TRR:initiate-variables ()
-  (setq TRR:total-times 0)
-  (setq TRR:total-time  0)
-  (setq TRR:times-of-current-step 0)
-  (setq TRR:time-of-current-step  0)
-  (setq TRR:whole-chars-of-current-step 0)
-  (setq TRR:whole-miss-of-current-step 0)
-  (set-buffer (get-buffer-create TRR:text-file-buffer))
-  (setq TRR:number-of-text-lines (- (count-lines (point-min) (point-max)) 18))
-  (set-buffer (get-buffer-create (TRR:display-buffer)))
+(defun trr-initiate-variables ()
+  (setq trr-total-times 0)
+  (setq trr-total-time  0)
+  (setq trr-times-of-current-step 0)
+  (setq trr-time-of-current-step  0)
+  (setq trr-whole-chars-of-current-step 0)
+  (setq trr-whole-miss-of-current-step 0)
+  (set-buffer (get-buffer-create trr-text-file-buffer))
+  (setq trr-number-of-text-lines (- (count-lines (point-min) (point-max)) 18))
+  (set-buffer (get-buffer-create (trr-display-buffer)))
   (erase-buffer)
-  (TRR:read-file)
-  (setq TRR:high-score (TRR:get-high-score))
-  (setq TRR:high-score-old TRR:high-score)
-  (setq TRR:beginner-flag (< TRR:high-score-old 0))
-  (set-buffer (get-buffer-create (TRR:record-buffer)))
-  (setq TRR:steps (1- (count-lines (point-min) (point-max))))
+  (trr-read-file)
+  (setq trr-high-score (trr-get-high-score))
+  (setq trr-high-score-old trr-high-score)
+  (setq trr-beginner-flag (< trr-high-score-old 0))
+  (set-buffer (get-buffer-create (trr-record-buffer)))
+  (setq trr-steps (1- (count-lines (point-min) (point-max))))
   (goto-char (point-min))
   (while (not (eobp))
-    (setq TRR:times-of-current-step
+    (setq trr-times-of-current-step
 	     (string-to-number
 	      (buffer-substring (+ (point) 4) (+ (point) 8))))
-    (setq TRR:total-times
-	  (+ TRR:total-times TRR:times-of-current-step))
-    (setq TRR:time-of-current-step
+    (setq trr-total-times
+	  (+ trr-total-times trr-times-of-current-step))
+    (setq trr-time-of-current-step
 	     (string-to-number
 	      (buffer-substring (+ (point) 9) (+ (point) 15))))
-    (setq TRR:total-time
-	  (+ TRR:total-time TRR:time-of-current-step))
-    (setq TRR:whole-chars-of-current-step
+    (setq trr-total-time
+	  (+ trr-total-time trr-time-of-current-step))
+    (setq trr-whole-chars-of-current-step
 	     (string-to-number
 	      (buffer-substring (+ (point) 16) (+ (point) 22))))
-    (setq TRR:whole-miss-of-current-step
+    (setq trr-whole-miss-of-current-step
 	     (string-to-number
 	      (buffer-substring (+ (point) 23) (+ (point) 28))))
     (forward-line)))
 
 
-(defun TRR:get-date ()
-  (if (not TRR:pass-flag) ; in not passed
-      (if TRR:japanese
+(defun trr-get-date ()
+  (if (not trr-pass-flag) ; in not passed
+      (if trr-japanese
 	  "ふぁいと!"
 	"cheers!  ")
     (let ((in-string (current-time-string))
@@ -749,7 +749,7 @@ speed    : %4d\n\
 	  (setq out-string (concat out-string (substring in-string 9 10) " "))
 	(setq out-string (concat out-string (substring in-string 8 10)))))))
 
-(defun TRR:convert-time-string-to-second (st)
+(defun trr-convert-time-string-to-second (st)
   (let ((hr (string-to-number (substring st 11 13))) ; hour
 	(min (string-to-number (substring st 14 16))) ; minute
 	(sec (string-to-number (substring st 17 19)))) ; second

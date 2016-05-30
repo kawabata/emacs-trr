@@ -1,21 +1,21 @@
 2013-11-17  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
 
 	* trr.el: Removed maintainer field.
-	* trr.el (TRR:score-dir, TRR:record-dir)
-	(TRR:use-update-game-score): new Customization variables.
-	* trr.texi: rewrite.  Rename from TRR19 to TRR.
+	* trr.el (trr-score-dir, trr-record-dir)
+	(trr-use-update-game-score): new Customization variables.
+	* trr.texi: rewrite.  Rename from trr19 to trr.
 
 2013-11-10  KAWABATA,Taichi  <kawabata.taichi@gmail.com>
 
 	* trr.el: Change customizable variables to defcustom/defface
 	* trr-files.el : Replace call-process to trr_update to update-game-score
 	* trr.el, etc: Byte-compilation warnings removed
-	* trr-files.el (TRR:score-dir): New variable
+	* trr-files.el (trr-score-dir): New variable
 
 2008-07-10  Shuji Narazaki  <narazaki@cs.cis.nagasaki-u.ac.jp>
 
-	* trr-graphs.el (TRR:write-graph): use '*' instead of Japanese star
-	* trr.el.base (TRR:print-result): try to fix display bug (1st attempt)
+	* trr-graphs.el (trr-write-graph): use '*' instead of Japanese star
+	* trr.el.base (trr-print-result): try to fix display bug (1st attempt)
 	* *.el: convert to utf8 from jis
 
 2008-07-06  Shuji Narazaki  <narazaki@cs.cis.nagasaki-u.ac.jp>
@@ -27,7 +27,7 @@
 	* text: add more documents
 	* trr_format.sh: added instead of the C version
 	* text/Java: added
-	* trr-menus.el (TRR:change-flag): add 'exit' item in config menu
+	* trr-menus.el (trr-change-flag): add 'exit' item in config menu
 
 Mon Jul  1 09:05:07 1996  Yamamoto Hirotaka  <ymmt@is.s.u-tokyo.ac.jp>
 
@@ -62,13 +62,13 @@ Wed Jun 26 07:28:53 1996  Yamamoto Hirotaka  <ymmt@is.s.u-tokyo.ac.jp>
 
 	* fixed a bug which occurs just (and only) after
 	  formating a text file.
-	* fixed some text in TRR:change-flag.
+	* fixed some text in trr-change-flag.
 	* released version 1.0 beta3
 
 Mon Jun 24 17:44:00 1996  Yamamoto Hirotaka  <ymmt@is.s.u-tokyo.ac.jp>
 
-	* fixed a bug in TRR:get-answer
-	* fixed a bug in TRR:write-graph
+	* fixed a bug in trr-get-answer
+	* fixed a bug in trr-write-graph
 	  In English mode, the position of the star(+) was slipped out.
 	* update & format are now ported to C
 	* fixed the rule of making *.elc in Makefile
@@ -78,4 +78,4 @@ Mon Jun 24 17:44:00 1996  Yamamoto Hirotaka  <ymmt@is.s.u-tokyo.ac.jp>
 
 Fri Jun 21 23:33:00 1996  Yamamoto Hirotaka  <ymmt@is.s.u-tokyo.ac.jp>
 
-	* created TRR19 version 1.0 first beta.
+	* created trr19 version 1.0 first beta.

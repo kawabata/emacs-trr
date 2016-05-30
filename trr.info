@@ -7,22 +7,22 @@ Top Menu
 ********
 
 これは GNU Emacs 上でタイピング能力を向上させるためのパッケージです。
-TRR の著作権に関しては GNU の GENERAL PUBLIC LICENSE の version 2 もしく
+trr の著作権に関しては GNU の GENERAL PUBLIC LICENSE の version 2 もしく
 はそれ以降に準じるものとします。
 
 * Menu:
 
-* History::                     TRR の歴史
+* History::                     trr の歴史
 * Installation::                
 * How to play::                 さあ始めよう
 * Further more::                詳しい説明を読んでみよう
-* How to customize::            TRR を料理しちゃおう!
+* How to customize::            trr を料理しちゃおう!
 * Index::                       
 
 
 File: trr.info,  Node: History,  Next: Installation,  Prev: Top,  Up: Top
 
-1 TRR の歴史
+1 trr の歴史
 ************
 
 1.1 The birth of trr
@@ -77,7 +77,7 @@ trrにさらに大きな転機が訪れたのは、沖電気工業で当時や�
 これは長らく親しまれてきたが、残念ながらNemacs上でしか動作しなかっ たた
 め、Emacs 19 が世に広まるにつれ徐々に忘れられ始めてしまった。そ こで東大
 情報科学科の山本泰宇(著者)がNemacs版のコードを全面的に見直す と共に、英
-語メッセージ表示などの機能を追加したTRR19を1996年に発表した。
+語メッセージ表示などの機能を追加したtrr19を1996年に発表した。
 
 
 File: trr.info,  Node: Installation,  Next: How to play,  Prev: History,  Up: Top
@@ -90,14 +90,14 @@ File: trr.info,  Node: Installation,  Next: How to play,  Prev: History,  Up: To
 
 * Menu:
 
-* unpack the package::          TRR を展開する
-* additional texts::            好きな text を TRR で使う
+* unpack the package::          trr を展開する
+* additional texts::            好きな text を trr で使う
 * autoload::                    
 
 
 File: trr.info,  Node: unpack the package,  Next: additional texts,  Up: Installation
 
-2.1 TRR を展開する
+2.1 trr を展開する
 ==================
 
 例えば以下のようにして下さい。
@@ -111,11 +111,11 @@ File: trr.info,  Node: unpack the package,  Next: additional texts,  Up: Install
 
 File: trr.info,  Node: additional texts,  Next: autoload,  Prev: unpack the package,  Up: Installation
 
-2.2 好きな text を TRR で使う
+2.2 好きな text を trr で使う
 =============================
 
-TRR は日本国憲法と合衆国憲法がいっしょに配布されています。 これら以外に
-も自由に好きな text を使って TRR を行なうことが出来ます。
+trr は日本国憲法と合衆国憲法がいっしょに配布されています。 これら以外に
+も自由に好きな text を使って trr を行なうことが出来ます。
 
    以下のような条件を満たしていることを確認して下さい。
 
@@ -142,7 +142,7 @@ File: trr.info,  Node: autoload,  Prev: additional texts,  Up: Installation
 2.3 autoload
 ============
 
-最後に TRR を autoload 出来るようにします。 以下のいずれかを選んで下さい
+最後に trr を autoload 出来るようにします。 以下のいずれかを選んで下さい
 。 なお以下では ‘(trrdir)’ は Makefile で指定した trrdir の こととします
 。
 
@@ -158,7 +158,7 @@ File: trr.info,  Node: autoload,  Prev: additional texts,  Up: Installation
      を書き加える。 この場合使いたいユーザーに使い方を教えてあげて下さい
      。
 
-   You are done! 以上で ‘M-x trr’ と type すれば TRR が出来るはずです。
+   You are done! 以上で ‘M-x trr’ と type すれば trr が出来るはずです。
 
 
 File: trr.info,  Node: How to play,  Next: Further more,  Prev: Installation,  Up: Top
@@ -166,7 +166,7 @@ File: trr.info,  Node: How to play,  Next: Further more,  Prev: Installation,  U
 3 さあ始めよう
 **************
 
-TRR は以下のような流れで実行できます。
+trr は以下のような流れで実行できます。
 
   1. Emacs (MULE) から ‘M-x(もしくは ESC-x) trr’ <RET>
 
@@ -185,10 +185,10 @@ TRR は以下のような流れで実行できます。
 
 File: trr.info,  Node: Further more,  Next: How to customize,  Prev: How to play,  Up: Top
 
-4 もっと TRR を知ろう!
+4 もっと trr を知ろう!
 **********************
 
-TRR にはいろいろな機能が備わっています。
+trr にはいろいろな機能が備わっています。
 
 * Menu:
 
@@ -202,18 +202,18 @@ File: trr.info,  Node: play level,  Next: toggling switches,  Up: Further more
 4.1 プレイレベル
 ================
 
-TRR は player の level に応じた4つの mode を持っています。 これは menu の
+trr は player の level に応じた4つの mode を持っています。 これは menu の
 ‘設定の変更’ で変えることが出来ます。
 
-‘初心者用 TRR’
+‘初心者用 trr’
      表示される text の量は中級者用と同じですが、 session を繰り返しても
      同じ text が表示されます。 得点は初心者用の file に記録されます。
 
-‘中級者用 TRR’
+‘中級者用 trr’
      default ではこの mode になっています。 これで300点が出せるようにな
-     ればあなたもなかなかの TRRer でしょう。
+     ればあなたもなかなかの trrer でしょう。
 
-‘上級者用 TRR’
+‘上級者用 trr’
      ここは初心者が生半可な気持ちで入ってはいけません。 text は full
      screen で出てきて、しかも減点率が 初心者もしくは中級者用の5倍!!
      へたをすれば一生悪夢に悩まされてしまいます。
@@ -247,14 +247,14 @@ File: trr.info,  Node: special keys,  Prev: toggling switches,  Up: Further more
 4.3 特殊なキー操作
 ==================
 
-TRR の typing 画面では次のような特殊なキー操作が許されています。
+trr の typing 画面では次のような特殊なキー操作が許されています。
 
 <C-l>
-     TRR を -nw で起動したりすると biff 等で画面が乱れることがあります。
+     trr を -nw で起動したりすると biff 等で画面が乱れることがあります。
      そういった時に <C-l> を押せば画面を redraw します。
 
 <C-c>
-     session を始めると TRR は typing のキー入力以外禁止します。 途中で
+     session を始めると trr は typing のキー入力以外禁止します。 途中で
      止めたくなった時は <C-c> を押すと即座に終了します。
 
 
@@ -264,7 +264,7 @@ File: trr.info,  Node: How to customize,  Next: Index,  Prev: Further more,  Up:
 5 使いやすくしよう
 ******************
 
-TRR は ‘.emacs’ に書くことで User にさらに細かい設定の 手段を提供してい
+trr は ‘.emacs’ に書くことで User にさらに細かい設定の 手段を提供してい
 ます。
 
 * Menu:
@@ -284,33 +284,33 @@ menu の ‘設定の変更’ で毎回設定を変更するのが煩わしい�
 れば default 値を変更できます。
 
 ‘return’
-     ‘(setq TRR:return-is-space t)’ とすれば default で <return> キーを
-     <space> キーで代用できます。 ‘(setq TRR:return-is-space nil)’ なら
+     ‘(setq trr-return-is-space t)’ とすれば default で <return> キーを
+     <space> キーで代用できます。 ‘(setq trr-return-is-space nil)’ なら
      出来ません。
 
 ‘language’
-     ‘(setq TRR:japanese nil)’ とすると message が default で 英語の表示
+     ‘(setq trr-japanese nil)’ とすると message が default で 英語の表示
      になります。t なら日本語です。
 
 ‘ding’
-     ‘(setq TRR:ding-when-miss nil)’ とすれば miss したときに 音がなりま
+     ‘(setq trr-ding-when-miss nil)’ とすれば miss したときに 音がなりま
      せん。t だとなるようになります。
 
 ‘hyphenate’
-     ‘(setq TRR:un-hyphenate nil)’ とするとハイフネーションを 戻さなくな
+     ‘(setq trr-un-hyphenate nil)’ とするとハイフネーションを 戻さなくな
      ります。t だとハイフネーションを消します。
 
 
 File: trr.info,  Node: default directory,  Next: color,  Prev: default switch,  Up: How to customize
 
-5.2 TRR の default directory の変更
+5.2 trr の default directory の変更
 ===================================
 
-TRR は通常、プレーヤーの記録とゲームスコアを
+trr は通常、プレーヤーの記録とゲームスコアを
 ‘~/.emacs.d/games/trrscores/’ に保存しますが、変更したい場合はそれぞ れ
-、‘(setq TRR:record-dir XXXXX)’ および‘(setq TRR:score-dir XXXXX)’ で変
-更できます。 ‘TRR:record-dir’ を、update-game-score を使っ て更新する場
-合は ‘(setq TRR:use-update-program t)’ としてください。
+、‘(setq trr-record-dir XXXXX)’ および‘(setq trr-score-dir XXXXX)’ で変
+更できます。 ‘trr-record-dir’ を、update-game-score を使っ て更新する場
+合は ‘(setq trr-use-update-program t)’ としてください。
 
 
 File: trr.info,  Node: color,  Next: hooks,  Prev: default directory,  Up: How to customize
@@ -319,24 +319,24 @@ File: trr.info,  Node: color,  Next: hooks,  Prev: default directory,  Up: How t
 ==================
 
 default の色指定は明るい背景用になっています。 これらは、‘M-x
-customize-group TRR’ で変更できます。
+customize-group trr’ で変更できます。
 
 ‘textの色’
-     ‘(set-face-foreground 'TRR:text-face COLOR)’ の color に 色を表す文
+     ‘(set-face-foreground 'trr-text-face COLOR)’ の color に 色を表す文
      字列を入れると打つべき text の色がその色になります。 COLOR に nil を
      指定すれば色がつきません。 以下も同様の指定方法です。
 
 ‘正しく打った文字の色’
-     ‘(set-face-foreground 'TRR:correct-face COLOR)’ で指定できます。
+     ‘(set-face-foreground 'trr-correct-face COLOR)’ で指定できます。
 
 ‘間違えた文字の色’
-     ‘(set-face-foreground 'TRR:miss-face COLOR)’ で指定できます。
+     ‘(set-face-foreground 'trr-miss-face COLOR)’ で指定できます。
 
 ‘グラフの星の色’
-     ‘(set-face-foreground 'TRR:graph-face COLOR)’ で指定できます。
+     ‘(set-face-foreground 'trr-graph-face COLOR)’ で指定できます。
 
 ‘自分の名前の背景の色’
-     ‘(set-face-foreground 'TRR:self-face COLOR)’ で指定できます。
+     ‘(set-face-foreground 'trr-self-face COLOR)’ で指定できます。
 
 
 
@@ -345,16 +345,16 @@ File: trr.info,  Node: hooks,  Prev: color,  Up: How to customize
 5.4 フック関数
 ==============
 
-TRR は以下のような hook を用意しています。
+trr は以下のような hook を用意しています。
 
-TRR:LOAD-HOOK
-     TRR を load する時だけ評価されます。
+trr-LOAD-HOOK
+     trr を load する時だけ評価されます。
 
-TRR:START-HOOK
+trr-START-HOOK
      M-x trr を実行する際に評価されます。
 
-TRR:END-HOOK
-     TRR を終了する際に評価されます。
+trr-END-HOOK
+     trr を終了する際に評価されます。
 
 
 File: trr.info,  Node: Index,  Prev: How to customize,  Up: Top
@@ -392,7 +392,7 @@ Index
 * switch:                                toggling switches.    (line  6)
 * text:                                  additional texts.     (line  6)
 * toggle:                                toggling switches.    (line  6)
-* TRR19:                                 History.              (line 58)
+* trr19:                                 History.              (line 58)
 * unpack:                                unpack the package.   (line  6)
 
 

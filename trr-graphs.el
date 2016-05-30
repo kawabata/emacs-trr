@@ -1,37 +1,37 @@
 ;;; trr-graphs --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 
-;; This file is a part of TRR, a type training package for GNU Emacs.
+;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
 
 ;; Variables for writing graphs
-(defvar TRR:skipped-step         0 "the number of skipped steps")
+(defvar trr-skipped-step         0 "the number of skipped steps")
 					; スキップしたステップ数
-(defvar TRR:list-of-eval       nil)
-(defvar TRR:list-of-speed      nil)
-(defvar TRR:list-of-miss       nil)
-(defvar TRR:list-of-average    nil)
-(defvar TRR:list-of-time       nil)
-(defvar TRR:list-of-times      nil)
-(defvar TRR:list-of-value      nil)
+(defvar trr-list-of-eval       nil)
+(defvar trr-list-of-speed      nil)
+(defvar trr-list-of-miss       nil)
+(defvar trr-list-of-average    nil)
+(defvar trr-list-of-time       nil)
+(defvar trr-list-of-times      nil)
+(defvar trr-list-of-value      nil)
 
-(defun TRR:display-variables-message-graph ()
+(defun trr-display-variables-message-graph ()
   (other-window 1)
-  (TRR:print-result)
+  (trr-print-result)
   (other-window 1)
-  (TRR:print-data)
+  (trr-print-data)
   (other-window 1)
-  (TRR:print-message)
+  (trr-print-message)
   (other-window 1)
-  (TRR:print-log)
+  (trr-print-log)
   (other-window 1)
-  (TRR:write-graph TRR:list-of-eval 0
-		   (if TRR:japanese
+  (trr-write-graph trr-list-of-eval 0
+		   (if trr-japanese
 		       "今回の得点グラフ"
 		     "Score Graph for this play"))
   (other-window 1))
 
 
-(defun TRR:write-graph (data-list skip string)
+(defun trr-write-graph (data-list skip string)
   (erase-buffer)
   (insert string "\n")
   (let ((fill-column (window-width)))
@@ -112,23 +112,23 @@
 	t
       (let ((i graph-steps))
 	(while (> i 0)
-	  (insert (if TRR:japanese
+	  (insert (if trr-japanese
 		      "     ┃\n"
 		      "      |\n")
 		  (format "%4d" (+ min (* i scale-y)))
-		  (if TRR:japanese
+		  (if trr-japanese
 		      " ┣\n"
 		    "  +\n"))
 	  (setq i (1- i)))
-	(insert (if TRR:japanese
+	(insert (if trr-japanese
 		    "     ┃\n"
 		  "      |\n")
 		(format "%4d" min)
-		(if TRR:japanese
+		(if trr-japanese
 		    " ┗"
 		  "  +"))
 	(while (< i horizontal-steps)
-	  (insert (if TRR:japanese
+	  (insert (if trr-japanese
 		      "━┻"
 		    "---+"))
 	  (setq i (1+ i)))
@@ -153,7 +153,7 @@
 	      (setq height (+ (/ th 2) (% th 2))))
 	    (forward-char times)
 	    (save-excursion
-	      (or TRR:japanese
+	      (or trr-japanese
 		  (forward-char))
 	      (picture-move-up (1+ height))
 	      (if (and (= i 1) (= times 1))
@@ -164,35 +164,35 @@
 		(if (= height 0)
 		    (progn (delete-char 1)
 			   (setq j (point))
-			   (insert (if TRR:japanese
+			   (insert (if trr-japanese
 				       "*"
 				     "*")))
 		  (setq j (point))
-		  (insert (if TRR:japanese
+		  (insert (if trr-japanese
 			      "★"
 			    "*")))
 		(and window-system
-		     ;;TRR:graph-color-name
+		     ;;trr-graph-color-name
 		     j
 		     (put-text-property j (point)
-					;;'face TRR:top-face-name))))
-					'face 'TRR:graph-face))))
+					;;'face trr-top-face-name))))
+					'face 'trr-graph-face))))
 	    (setq i (1+ i)))))))
   (switch-to-buffer (get-buffer (current-buffer))))
 
 
-(defun TRR:show-ranking ()
-  (set-buffer (get-buffer-create (TRR:display-buffer)))
+(defun trr-show-ranking ()
+  (set-buffer (get-buffer-create (trr-display-buffer)))
   (erase-buffer)
-  (insert (if TRR:japanese
+  (insert (if trr-japanese
 	      "\
 順位\tスコア\tログイン名\tstep\t総回数\t総時間\t  日付,   時間\n"
 	    "\
 Order\tScore\tName\t\tstep\ttimes\ttime\tdate,     hour\n"))
-  (insert-file-contents TRR:score-file)
+  (insert-file-contents trr-score-file)
   (goto-char (point-min))
   (forward-line 1)
-  ;; TRR graphs :: spaces -> TAB
+  ;; trr graphs :: spaces -> TAB
   (while (re-search-forward " " nil t) (replace-match "\t"))
   (goto-char (point-min))
   (forward-line 1)
@@ -211,7 +211,7 @@ Order\tScore\tName\t\tstep\ttimes\ttime\tdate,     hour\n"))
 	    (while (not (looking-at "\t")) (forward-char 1))
 	    (and window-system
 		 (put-text-property self (point) 'face
-				    'TRR:self-face))
+				    'trr-self-face))
 	    (insert " <")
 	    (and (< (length (user-login-name)) 4)
 		 (insert "\t"))
@@ -227,8 +227,8 @@ Order\tScore\tName\t\tstep\ttimes\ttime\tdate,     hour\n"))
     (and window-system
 	 (/= j (point))
 	 (put-text-property j (1+ (point)) 'face
-			    'TRR:graph-face))
-    (switch-to-buffer (TRR:display-buffer))
+			    'trr-graph-face))
+    (switch-to-buffer (trr-display-buffer))
     (if self
 	(progn
 	  (goto-char self)
@@ -236,15 +236,15 @@ Order\tScore\tName\t\tstep\ttimes\ttime\tdate,     hour\n"))
       (goto-char (point-min)))))
 
 
-(defun TRR:get-graph-points ()
-  (setq TRR:skipped-step 0)
-  (setq TRR:list-of-speed nil)
-  (setq TRR:list-of-miss nil)
-  (setq TRR:list-of-time nil)
-  (setq TRR:list-of-times nil)
-  (setq TRR:list-of-value nil)
-  (setq TRR:list-of-average nil)
-  (with-current-buffer (get-buffer-create (TRR:record-buffer))
+(defun trr-get-graph-points ()
+  (setq trr-skipped-step 0)
+  (setq trr-list-of-speed nil)
+  (setq trr-list-of-miss nil)
+  (setq trr-list-of-time nil)
+  (setq trr-list-of-times nil)
+  (setq trr-list-of-value nil)
+  (setq trr-list-of-average nil)
+  (with-current-buffer (get-buffer-create (trr-record-buffer))
     (goto-char (point-min))
     (let ((curstep 1)
 	  (curpoint (point))
@@ -260,35 +260,35 @@ Order\tScore\tName\t\tstep\ttimes\ttime\tdate,     hour\n"))
 		       (buffer-substring
 			(+ curpoint 9) (+ curpoint 15))))
 	(if (= curtime 0)
-	    (setq TRR:skipped-step (1+ TRR:skipped-step))
-	  (setq TRR:list-of-value
+	    (setq trr-skipped-step (1+ trr-skipped-step))
+	  (setq trr-list-of-value
 		(cons
 		 (string-to-number
 		  (buffer-substring
 		   curpoint (+ curpoint 3)))
-		 TRR:list-of-value))
-	  (setq TRR:list-of-times
+		 trr-list-of-value))
+	  (setq trr-list-of-times
 		(cons
 		 (string-to-number
 		  (buffer-substring
 		   (+ curpoint 4) (+ curpoint 8)))
-		 TRR:list-of-times))
-	  (setq TRR:list-of-time
+		 trr-list-of-times))
+	  (setq trr-list-of-time
 		(cons
 		 (/ curtime 60)
-		 TRR:list-of-time))
-	  (setq TRR:list-of-speed
+		 trr-list-of-time))
+	  (setq trr-list-of-speed
 		(cons
 		 (if (= curtime 0) 0 (/ (* wc 60) curtime))
-		 TRR:list-of-speed))
-	  (setq TRR:list-of-miss
+		 trr-list-of-speed))
+	  (setq trr-list-of-miss
 		(cons
 		 (if (= wc 0) 0 (/ (* mc 1000) wc))
-		 TRR:list-of-miss))
-	  (setq TRR:list-of-average
+		 trr-list-of-miss))
+	  (setq trr-list-of-average
 		(cons
-		 (TRR:evaluate-point wc mc curtime)
-		 TRR:list-of-average)))
+		 (trr-evaluate-point wc mc curtime)
+		 trr-list-of-average)))
  	(forward-line)
 	(setq curpoint (point))
 	(setq curstep (+ curstep 1))))))

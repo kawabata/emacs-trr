@@ -1,4 +1,4 @@
-/* format.c -- a text formatter for TRR19
+/* format.c -- a text formatter for trr19
 */
 #include <stdlib.h>
 #include <stdio.h>

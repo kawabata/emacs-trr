@@ -16,7 +16,7 @@ Add below in your emacs config file (``~/.emacs`` or ``~/.emacs.d/init.el``)::
 
   (add-to-list 'load-path "~/.emacs-trr")
   (require 'trr)
-  ;; (setq TRR:japanese t)  ;; uncomment this to play with Japanese mode
+  ;; (setq trr-japanese t)  ;; uncomment this to play with Japanese mode
 
 If you're `El-Get`_ user, just add below in your emacs config file::
 
