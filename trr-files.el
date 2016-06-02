@@ -1,57 +1,57 @@
 ;;; trr-files --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 
-;; This file is a part of TRR, a type training package for GNU Emacs.
+;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
 
 ;; files for a session.
-(defvar   TRR:text-file nil "* text file")
-(defvar   TRR:record-file nil "* result file for each text.")
-(defvar   TRR:score-file nil "* score file")
-(defvar   TRR:score-file-name nil "* score file name")
-(defvar   TRR:text-name "" "* text name from CONTENTS")
+(defvar   trr-text-file nil "* text file")
+(defvar   trr-record-file nil "* result file for each text.")
+(defvar   trr-score-file nil "* score file")
+(defvar   trr-score-file-name nil "* score file name")
+(defvar   trr-text-name "" "* text name from CONTENTS")
 
-(defvar   TRR:errbuf (generate-new-buffer " *update-game-score loss*"))
+(defvar   trr-errbuf (generate-new-buffer " *update-game-score loss*"))
 
-(defun TRR:debug (file)
+(defun trr-debug (file)
   (interactive "F")
   (save-excursion
     (find-file file)
     ;;(find-file (expand-file-name (concat "~/src/trr19/" file)))
     (erase-buffer)
-    (insert (format "TRR:flags\nTRR:start-flag\t%s\nTRR:quit-flag\t%s\nTRR:update-flag\t%s\nTRR:pass-flag\t%s\nTRR:cheat-flag\t%s\nTRR:beginner-flag\t%s\nTRR:random-flag\t%s\nTRR:secret-flag\t%s\nTRR:typist-flag\t%s\nTRR:small-window-flag\t%s\nTRR:skip-session-flag\t%s\n\n" TRR:start-flag TRR:quit-flag TRR:update-flag TRR:pass-flag TRR:cheat-flag TRR:beginner-flag TRR:random-flag TRR:secret-flag TRR:typist-flag TRR:small-window-flag TRR:skip-session-flag))
-    (insert (format "Variables for Session\nTRR:eval\t%s\nTRR:whole-char-count\t%s\nTRR:correct-char-count\t%s\nTRR:start-time\t%s\nTRR:end-time\t%s\nTRR:miss-type-ratio\t%s\nTRR:type-speed\t%s\n\n" TRR:eval TRR:whole-char-count TRR:correct-char-count TRR:start-time TRR:end-time TRR:miss-type-ratio TRR:type-speed))
-    (insert (format "Variables for STEP\nTRR:steps\t%s\nTRR:times-of-current-step\t%s\nTRR:time-of-current-step\t%s\nTRR:whole-chars-of-current-step\t%s\nTRR:whole-miss-of-current-step\t%s\n\n" TRR:steps TRR:times-of-current-step TRR:time-of-current-step TRR:whole-chars-of-current-step TRR:whole-miss-of-current-step))
-    (insert (format "Others\nTRR:total-times\t%s\nTRR:total-time\t%s\nTRR:high-score\t%s\nTRR:high-score-old\t%s\nTRR:elapsed-time\t%s\n" TRR:total-times TRR:total-time TRR:high-score TRR:high-score-old TRR:elapsed-time))
+    (insert (format "trr-flags\ntrr-start-flag\t%s\ntrr-quit-flag\t%s\ntrr-update-flag\t%s\ntrr-pass-flag\t%s\ntrr-cheat-flag\t%s\ntrr-beginner-flag\t%s\ntrr-random-flag\t%s\ntrr-secret-flag\t%s\ntrr-typist-flag\t%s\ntrr-small-window-flag\t%s\ntrr-skip-session-flag\t%s\n\n" trr-start-flag trr-quit-flag trr-update-flag trr-pass-flag trr-cheat-flag trr-beginner-flag trr-random-flag trr-secret-flag trr-typist-flag trr-small-window-flag trr-skip-session-flag))
+    (insert (format "Variables for Session\ntrr-eval\t%s\ntrr-whole-char-count\t%s\ntrr-correct-char-count\t%s\ntrr-start-time\t%s\ntrr-end-time\t%s\ntrr-miss-type-ratio\t%s\ntrr-type-speed\t%s\n\n" trr-eval trr-whole-char-count trr-correct-char-count trr-start-time trr-end-time trr-miss-type-ratio trr-type-speed))
+    (insert (format "Variables for STEP\ntrr-steps\t%s\ntrr-times-of-current-step\t%s\ntrr-time-of-current-step\t%s\ntrr-whole-chars-of-current-step\t%s\ntrr-whole-miss-of-current-step\t%s\n\n" trr-steps trr-times-of-current-step trr-time-of-current-step trr-whole-chars-of-current-step trr-whole-miss-of-current-step))
+    (insert (format "Others\ntrr-total-times\t%s\ntrr-total-time\t%s\ntrr-high-score\t%s\ntrr-high-score-old\t%s\ntrr-elapsed-time\t%s\n" trr-total-times trr-total-time trr-high-score trr-high-score-old trr-elapsed-time))
     (save-buffer)
     (kill-buffer (current-buffer))))
 
 
-(defun TRR:initiate-files ()
-  (with-current-buffer (get-buffer-create TRR:text-file-buffer)
+(defun trr-initiate-files ()
+  (with-current-buffer (get-buffer-create trr-text-file-buffer)
     (erase-buffer)
-    (insert-file-contents TRR:text-file)
-    ;;(or (file-exists-p TRR:score-file)
-    ;;    (call-process  TRR:update-program nil 0 nil TRR:score-file-name))
-    (unless (file-exists-p TRR:score-file)
-      ;; touch `TRR:score-file'
-      (make-directory (file-name-directory TRR:score-file) t)
-      (with-temp-file TRR:score-file))
-    (find-file-read-only TRR:score-file)
-    (find-file TRR:record-file)
-    (set-buffer (get-buffer-create (TRR:record-buffer)))
+    (insert-file-contents trr-text-file)
+    ;;(or (file-exists-p trr-score-file)
+    ;;    (call-process  trr-update-program nil 0 nil trr-score-file-name))
+    (unless (file-exists-p trr-score-file)
+      ;; touch `trr-score-file'
+      (make-directory (file-name-directory trr-score-file) t)
+      (with-temp-file trr-score-file))
+    (find-file-read-only trr-score-file)
+    (find-file trr-record-file)
+    (set-buffer (get-buffer-create (trr-record-buffer)))
     (erase-buffer)
-    (if (file-exists-p TRR:record-file)
-	(insert-file-contents TRR:record-file)
-      (if TRR:japanese
+    (if (file-exists-p trr-record-file)
+	(insert-file-contents trr-record-file)
+      (if trr-japanese
 	  (insert "  0    0      0      0     0 ふぁいと!\n")
 	(insert "  0    0      0      0     0 cheers!  \n")))))
 
 
-(defun TRR:decide-trr-text (num)
+(defun trr-decide-trr-text (num)
   (switch-to-buffer
-   (get-buffer-create (TRR:trainer-menu-buffer)))
+   (get-buffer-create (trr-trainer-menu-buffer)))
   (erase-buffer)
-  (insert-file-contents TRR:select-text-file)
+  (insert-file-contents trr-select-text-file)
   (untabify (point-min) (point-max))
   (goto-char (point-min))
   (let ((kill-whole-line t))
@@ -64,12 +64,12 @@
   (let (temp temp-file temp-id)
     (setq temp (point))
     (while (not (= (char-after (point)) 32)) (forward-char))
-    (setq TRR:text-name (buffer-substring temp (point)))
-    (with-current-buffer (get-buffer-create (TRR:trainer-menu-buffer))
+    (setq trr-text-name (buffer-substring temp (point)))
+    (with-current-buffer (get-buffer-create (trr-trainer-menu-buffer))
       (setq mode-line-format (list "   "
-				   (TRR:trainer-menu-buffer)
+				   (trr-trainer-menu-buffer)
 				   "                "
-				   TRR:text-name))
+				   trr-text-name))
       (force-mode-line-update))
     (while      (= (char-after (point)) 32)  (forward-char))
     (while (not (= (char-after (point)) 32)) (forward-char))
@@ -85,40 +85,40 @@
 		    (= (char-after (point)) 32)
 		    (= (char-after (point)) ?\n))) (forward-char))
     (setq temp-id (buffer-substring temp (point)))
-    (setq TRR:text-file (expand-file-name
+    (setq trr-text-file (expand-file-name
                          (concat "text/" temp-file ".formed")
-                          TRR:directory))
-    (setq TRR:text-file-buffer (file-name-nondirectory TRR:text-file))
-    (and (not (and (file-exists-p (expand-file-name TRR:text-file))
-		   (file-newer-than-file-p TRR:text-file
+                          trr-directory))
+    (setq trr-text-file-buffer (file-name-nondirectory trr-text-file))
+    (and (not (and (file-exists-p (expand-file-name trr-text-file))
+		   (file-newer-than-file-p trr-text-file
 					   (expand-file-name
-					    (concat "text/" temp-file) TRR:directory))))
+					    (concat "text/" temp-file) trr-directory))))
 	 (or (file-exists-p (expand-file-name (concat "text/" temp-file)
-                                              TRR:directory))
+                                              trr-directory))
 	     (error "%s does not exists!" temp-file))
-	 (message (if TRR:japanese "初期化ファイルを作ってるの。ちょっとまってね。"
+	 (message (if trr-japanese "初期化ファイルを作ってるの。ちょっとまってね。"
 		    "Making preformatted file. please wait..."))
-	 ;;(call-process TRR:format-program nil nil nil temp-file))
-         (TRR:format-program temp-file))
-    (or (file-directory-p TRR:record-dir)
+	 ;;(call-process trr-format-program nil nil nil temp-file))
+         (trr-format-program temp-file))
+    (or (file-directory-p trr-record-dir)
 	(progn
-	  ;;(call-process "/bin/rm" nil 0 nil "-f" TRR:record-dir)
-          (if (file-exists-p TRR:record-dir)
-              (delete-file TRR:record-dir))
-	  (make-directory TRR:record-dir t)))
-    (setq TRR:record-file
-          (expand-file-name (concat (user-login-name) "-" temp-id (TRR:file-string))
-                            TRR:record-dir))
-    (setq TRR:score-file-name (concat "SCORES-" temp-id (TRR:file-string)))
-    (setq TRR:score-file (expand-file-name (concat "record/" TRR:score-file-name)
-                                           TRR:score-dir))))
+	  ;;(call-process "/bin/rm" nil 0 nil "-f" trr-record-dir)
+          (if (file-exists-p trr-record-dir)
+              (delete-file trr-record-dir))
+	  (make-directory trr-record-dir t)))
+    (setq trr-record-file
+          (expand-file-name (concat (user-login-name) "-" temp-id (trr-file-string))
+                            trr-record-dir))
+    (setq trr-score-file-name (concat "SCORES-" temp-id (trr-file-string)))
+    (setq trr-score-file (expand-file-name (concat "record/" trr-score-file-name)
+                                           trr-score-dir))))
 
 
-(defun TRR:format-program (temp-file)
+(defun trr-format-program (temp-file)
   (with-temp-file (expand-file-name (concat "text/" temp-file ".formed")
-                                    TRR:directory)
+                                    trr-directory)
     (insert-file-contents (expand-file-name (concat "text/" temp-file)
-                                    TRR:directory))
+                                    trr-directory))
     (delete-matching-lines "^[ \t]*$")
     (goto-char (point-min))
     (while (re-search-forward "\\([.?!;]\\) *$" nil t) (replace-match (match-string 1)))
@@ -126,20 +126,20 @@
     (while (re-search-forward "^[ 	]+" nil t) (replace-match ""))))
 
 
-(defun TRR:file-string ()
+(defun trr-file-string ()
   (cond
-   (TRR:secret-flag "-secret")
-   (TRR:typist-flag "-typist")
-   ((not TRR:random-flag) "-easy")
+   (trr-secret-flag "-secret")
+   (trr-typist-flag "-typist")
+   ((not trr-random-flag) "-easy")
    (t "")))
 
 
-(defun TRR:kill-file (file)
+(defun trr-kill-file (file)
   (if file
       (let ((tfile (get-file-buffer (expand-file-name file))))
 	(if tfile (kill-buffer tfile)))))
 
-(defun TRR:save-file (buffer file)
+(defun trr-save-file (buffer file)
   (let ((tb (get-buffer buffer))
 	tfile)
     (if tb
@@ -150,16 +150,16 @@
 		      (if (file-exists-p tfile) (delete-file tfile))))))))
 
 
-(defun TRR:read-file ()
-  (with-current-buffer TRR:text-file-buffer
+(defun trr-read-file ()
+  (with-current-buffer trr-text-file-buffer
     (goto-char (point-min))
     (forward-line
-     (if TRR:random-flag (1- (TRR:random-num))
-       (1- (* TRR:steps (/ TRR:number-of-text-lines 64)))))
-    ;; (if TRR:random-flag
-    ;;     (goto-line (TRR:random-num))
+     (if trr-random-flag (1- (trr-random-num))
+       (1- (* trr-steps (/ trr-number-of-text-lines 64)))))
+    ;; (if trr-random-flag
+    ;;     (goto-line (trr-random-num))
     ;;   (goto-line
-    ;;    (* TRR:steps (/ TRR:number-of-text-lines 64))))
+    ;;    (* trr-steps (/ trr-number-of-text-lines 64))))
     (let (fill-column text start ch)
       (setq ch (char-after (point)))
       (while (not (or (= ch ?!)
@@ -193,11 +193,11 @@
       (setq start (point))
       (forward-line 18)
       (setq text (buffer-substring start (point)))
-      (switch-to-buffer (get-buffer-create (TRR:display-buffer)))
+      (switch-to-buffer (get-buffer-create (trr-display-buffer)))
       (erase-buffer)
       (insert text)
       (untabify (point-min) (point-max))
-      (and TRR:un-hyphenate
+      (and trr-un-hyphenate
 	   (progn
 	     (goto-char (point-min))
 	     (while (re-search-forward "\\([a-zA-z]\\)-\n *\\([a-zA-Z]\\)"
@@ -215,56 +215,56 @@
 	(forward-line 1))
       (and window-system
 	   (put-text-property (point-min) (point-max) 'face
-			      'TRR:text-face))
+			      'trr-text-face))
       (goto-char (point-min)))))
 
-(defun TRR:update-score-file (score)
-  "Write SCORE to `TRR:score-file'."
-  (if (not TRR:use-update-program)
-      (if (file-writable-p TRR:score-file)
-          (with-temp-file TRR:score-file
-            (insert-file-contents TRR:score-file)
+(defun trr-update-score-file (score)
+  "Write SCORE to `trr-score-file'."
+  (if (not trr-use-update-program)
+      (if (file-writable-p trr-score-file)
+          (with-temp-file trr-score-file
+            (insert-file-contents trr-score-file)
             (insert (format "%s %s %s %s %s\n"
                             (number-to-string score)
                             (user-login-name)
-                            (number-to-string TRR:steps)
-                            (number-to-string TRR:total-times)
-                            (number-to-string (/ TRR:total-time 60))))
+                            (number-to-string trr-steps)
+                            (number-to-string trr-total-times)
+                            (number-to-string (/ trr-total-time 60))))
             (sort-numeric-fields 1 (point-min) (point-max))
             (reverse-region (point-min) (point-max)))
-        (error "Score file (%s) is not writable!  Please check `TRR:score-dir' variable"
-               TRR:score-file))
-    (unless (file-exists-p TRR:score-file)
-      (error "Score file (%s) does not exist!  Please check `TRR:score-dir' variable"
-             TRR:score-file))
-    (unless (file-executable-p TRR:update-program)
-      (error "Helper program (%s) is not executable" TRR:update-program))
+        (error "Score file (%s) is not writable!  Please check `trr-score-dir' variable"
+               trr-score-file))
+    (unless (file-exists-p trr-score-file)
+      (error "Score file (%s) does not exist!  Please check `trr-score-dir' variable"
+             trr-score-file))
+    (unless (file-executable-p trr-update-program)
+      (error "Helper program (%s) is not executable" trr-update-program))
     (let
         ((result
-          (call-process TRR:update-program nil TRR:errbuf nil
-                        "-r" "-m" "50" "-d" (expand-file-name "record" TRR:score-dir)
-                        TRR:score-file-name
+          (call-process trr-update-program nil trr-errbuf nil
+                        "-r" "-m" "50" "-d" (expand-file-name "record" trr-score-dir)
+                        trr-score-file-name
                         (number-to-string score)
                         (format "%s %s %s"
-                                (number-to-string TRR:steps)
-                                (number-to-string TRR:total-times)
-                                (number-to-string (/ TRR:total-time 60))))))
+                                (number-to-string trr-steps)
+                                (number-to-string trr-total-times)
+                                (number-to-string (/ trr-total-time 60))))))
       (if (/= result 0)
           (error "Failed to write score file (%s) by helper program (%s)! Please check permissions"
-                 TRR:score-file TRR:update-program)))))
-  ;;(call-process TRR:update-program nil 0 nil
-  ;;      	TRR:score-file-name
+                 trr-score-file trr-update-program)))))
+  ;;(call-process trr-update-program nil 0 nil
+  ;;      	trr-score-file-name
   ;;      	(user-login-name)
   ;;      	(int-to-string score)
-  ;;      	(int-to-string TRR:steps)
-  ;;      	(int-to-string TRR:total-times)
-  ;;		(int-to-string (/ TRR:total-time 60))))
+  ;;      	(int-to-string trr-steps)
+  ;;      	(int-to-string trr-total-times)
+  ;;		(int-to-string (/ trr-total-time 60))))
 
 
-(defun TRR:get-high-score (&optional file)
-  (if (not (file-exists-p TRR:record-file))
+(defun trr-get-high-score (&optional file)
+  (if (not (file-exists-p trr-record-file))
       -1
-    (find-file TRR:record-file)
+    (find-file trr-record-file)
     (let ((maxp -1))
       (while (not (eobp))
 	(or (zerop (string-to-number (buffer-substring (+ (point) 4)
