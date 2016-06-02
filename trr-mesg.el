@@ -1,4 +1,6 @@
-;;; trr-message.el - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
+;;; trr-message.el --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
+
+;;; Commentary:
 
 ;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
@@ -43,6 +45,21 @@
 ;; trr-times-for-message     このステップでの累積実行回数
 ;;			     the total number of trr trials in the current step
 
+;;; Code:
+
+(defvar trr-japanese)
+(defvar trr-steps)
+(defvar trr-eval)
+(defvar trr-cheat-flag)
+(defvar trr-secret-flag)
+(defvar trr-typist-flag)
+(defvar trr-beginner-flag)
+(defvar trr-update-flag)
+(defvar trr-pass-flag)
+(defvar trr-high-score)
+(defvar trr-high-score-old)
+(defvar trr-miss-type-ratio)
+(defvar trr-times-for-message)
 
 (defun trr-print-first-message-as-result ()
   (insert  (if trr-japanese
@@ -113,7 +130,7 @@
 
 
 (defun trr-message-for-cheater ()
-  (cond 
+  (cond
    ((> trr-eval 750)
     (insert (if trr-japanese
 		"そんなことでいいの？恥を知りなさい。"
@@ -265,7 +282,7 @@
 
 
 (defun trr-message-for-failed-one-2 (diff)
-  (cond 
+  (cond
    ((> trr-miss-type-ratio 60)
     (insert (if trr-japanese
 		"ミスがあまりにも多過ぎるからダメなのよ。とにかく正確に打つ練習に励みなさい。もうそれしか方法はないわ。"

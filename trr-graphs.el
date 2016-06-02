@@ -1,10 +1,17 @@
 ;;; trr-graphs --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 
+;;; Commentary:
+
 ;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
 
 ;; Variables for writing graphs
-(defvar trr-skipped-step         0 "the number of skipped steps")
+
+;;; Code:
+
+(require 'picture) ; picture-move-up
+
+(defvar trr-skipped-step         0 "The number of skipped steps.")
 					; スキップしたステップ数
 (defvar trr-list-of-eval       nil)
 (defvar trr-list-of-speed      nil)
@@ -13,6 +20,17 @@
 (defvar trr-list-of-time       nil)
 (defvar trr-list-of-times      nil)
 (defvar trr-list-of-value      nil)
+
+(defvar trr-japanese)
+(defvar trr-score-file)
+
+(declare-function trr-print-result   "trr.el")
+(declare-function trr-print-data     "trr.el")
+(declare-function trr-print-log      "trr.el")
+(declare-function trr-print-message  "trr.el")
+(declare-function trr-display-buffer "trr.el")
+(declare-function trr-record-buffer  "trr.el")
+(declare-function trr-evaluate-point "trr.el")
 
 (defun trr-display-variables-message-graph ()
   (other-window 1)

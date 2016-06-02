@@ -1,18 +1,70 @@
 ;;; trr-files --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
 
+;;; Commentary:
+
 ;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
 
 ;; files for a session.
-(defvar   trr-text-file nil "* text file")
-(defvar   trr-record-file nil "* result file for each text.")
-(defvar   trr-score-file nil "* score file")
-(defvar   trr-score-file-name nil "* score file name")
-(defvar   trr-text-name "" "* text name from CONTENTS")
 
-(defvar   trr-errbuf (generate-new-buffer " *update-game-score loss*"))
+;;; Code:
+
+(defvar  trr-text-file nil "* text file.")
+(defvar  trr-record-file nil "* result file for each text.")
+(defvar  trr-score-file nil "* score file.")
+(defvar  trr-score-file-name nil "* score file name.")
+(defvar  trr-text-name "" "* text name from CONTENTS.")
+
+(defvar  trr-errbuf (generate-new-buffer " *update-game-score loss*"))
+
+;; trr.el variables
+(defvar trr-text-file-buffer)
+(defvar trr-japanese)
+(defvar trr-start-flag)
+(defvar trr-quit-flag)
+(defvar trr-update-flag)
+(defvar trr-pass-flag)
+(defvar trr-cheat-flag)
+(defvar trr-beginner-flag)
+(defvar trr-random-flag)
+(defvar trr-secret-flag)
+(defvar trr-typist-flag)
+(defvar trr-small-window-flag)
+(defvar trr-skip-session-flag)
+(defvar trr-eval)
+(defvar trr-whole-char-count)
+(defvar trr-correct-char-count)
+(defvar trr-start-time)
+(defvar trr-end-time)
+(defvar trr-miss-type-ratio)
+(defvar trr-type-speed)
+(defvar trr-steps)
+(defvar trr-times-of-current-step)
+(defvar trr-time-of-current-step)
+(defvar trr-whole-chars-of-current-step)
+(defvar trr-whole-miss-of-current-step)
+(defvar trr-total-times)
+(defvar trr-total-time)
+(defvar trr-high-score)
+(defvar trr-high-score-old)
+(defvar trr-elapsed-time)
+(defvar trr-select-text-file)
+(defvar trr-directory)
+(defvar trr-record-dir)
+(defvar trr-score-dir)
+(defvar trr-number-of-text-lines)
+(defvar trr-un-hyphenate)
+(defvar trr-update-program)
+(defvar trr-use-update-program)
+
+(declare-function trr-record-buffer "trr.el")
+(declare-function trr-trainer-menu-buffer "trr.el")
+(declare-function trr-random-num "trr.el")
+(declare-function trr-display-buffer "trr.el")
+
 
 (defun trr-debug (file)
+  "Debug FILE."
   (interactive "F")
   (save-excursion
     (find-file file)
@@ -27,6 +79,7 @@
 
 
 (defun trr-initiate-files ()
+  "Initialize files."
   (with-current-buffer (get-buffer-create trr-text-file-buffer)
     (erase-buffer)
     (insert-file-contents trr-text-file)
@@ -48,6 +101,7 @@
 
 
 (defun trr-decide-trr-text (num)
+  "Decide to text NUM."
   (switch-to-buffer
    (get-buffer-create (trr-trainer-menu-buffer)))
   (erase-buffer)
@@ -115,6 +169,7 @@
 
 
 (defun trr-format-program (temp-file)
+  "Format program with TEMP-FILE."
   (with-temp-file (expand-file-name (concat "text/" temp-file ".formed")
                                     trr-directory)
     (insert-file-contents (expand-file-name (concat "text/" temp-file)

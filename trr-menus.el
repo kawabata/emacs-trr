@@ -1,9 +1,58 @@
-;;; trr-menus - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
+;;; trr-menus --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
+
+;;; Commentary:
 
 ;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
 
 ;; answer getting function
+
+;;; Code:
+
+(defvar trr-select-text-file)
+(defvar trr-japanese)
+(defvar trr-quit-flag)
+(defvar trr-installator)
+(defvar trr-skip-session-flag)
+(defvar trr-win-conf)
+(defvar trr-return-is-space)
+(defvar trr-ding-when-miss)
+(defvar trr-un-hyphenate)
+(defvar trr-random-flag)
+(defvar trr-typist-flag)
+(defvar trr-secret-flag)
+(defvar trr-win-conf-display)
+(defvar trr-list-of-speed)
+(defvar trr-skipped-step)
+(defvar trr-text-name)
+(defvar trr-list-of-miss)
+(defvar trr-list-of-average)
+(defvar trr-list-of-time)
+(defvar trr-list-of-times)
+(defvar trr-text-lines)
+(defvar trr-record-file)
+(defvar trr-text-file-buffer)
+(defvar trr-score-file)
+
+(declare-function trr-trainer-menu-buffer "trr.el")
+(declare-function trr-current-trr "trr.el")
+(declare-function trr-decide-trr-text "trr.el")
+(declare-function trr-initiate-files "trr.el")
+(declare-function trr-initiate-variables "trr.el")
+(declare-function trr-print-log "trr.el")
+(declare-function trr-print-data "trr.el")
+(declare-function trr-finish "trr.el")
+(declare-function trr-prepare-buffers "trr.el")
+(declare-function trr-read-file "trr.el")
+(declare-function trr-display-buffer "trr.el")
+(declare-function trr-show-ranking "trr.el")
+(declare-function trr-get-graph-points "trr.el")
+(declare-function trr-write-graph "trr.el")
+(declare-function trr-print-log-for-display "trr.el")
+(declare-function trr-save-file "trr.el")
+(declare-function trr-record-buffer "trr.el")
+(declare-function trr-kill-file "trr.el")
+
 (defun trr-get-answer (string1 string2 max)
   (let ((answer (string-to-number (read-from-minibuffer string1))))
     (while (or (<= answer 0) (> answer max))
@@ -105,14 +154,14 @@
 次の中から選んで下さい。\n\
 \n\
 1. 初級者向けのタイプトレーナ\n\
-   評価関数は（打文字数−（誤打数＊１０））＊６０／（秒数）\n\
+   評価関数は（打文字数－（誤打数＊１０））＊６０／（秒数）\n\
    テキストはステップ毎に同じものを表示\n\
 \n\
 2. 中級者向けのタイプトレーナ（デフォールトはこれに設定される）\n\
-   評価関数は（打文字数−（誤打数＊１０））＊６０／（秒数）\n\
+   評価関数は（打文字数－（誤打数＊１０））＊６０／（秒数）\n\
 \n\
 3. 上級者向けのタイプトレーナ\n\
-   評価関数は（打文字数−（誤打数＊５０））＊６０／（秒数）\n\
+   評価関数は（打文字数－（誤打数＊５０））＊６０／（秒数）\n\
    １回の実行で必要なタイプ量が多い\n\
 \n\
 4. 秘密主義者向けのタイプトレーナ\n\
@@ -244,7 +293,7 @@ at the end of a line.\n\n")
       (trr-get-graph-points)
       (trr-write-graph trr-list-of-speed trr-skipped-step
 		       (concat (if trr-japanese
-				   "ステップ−平均スピード（文字／分）グラフ"
+				   "ステップ－平均スピード（文字／分）グラフ"
 				 "STEP <-> SPEED(type / minute) Graph")
 			       "\t" trr-text-name))
       (trr-select-menu))
@@ -254,7 +303,7 @@ at the end of a line.\n\n")
       (trr-get-graph-points)
       (trr-write-graph trr-list-of-miss trr-skipped-step
 		       (concat (if trr-japanese
-				   "ステップ−平均ミス率（/1000）グラフ"
+				   "ステップ－平均ミス率（/1000）グラフ"
 				 "STEP <-> avg.Miss-ratio(/1000) Graph")
 			       "\t" trr-text-name))
       (trr-select-menu))
@@ -264,7 +313,7 @@ at the end of a line.\n\n")
       (trr-get-graph-points)
       (trr-write-graph trr-list-of-average trr-skipped-step
 		       (concat (if trr-japanese
-				   "ステップ−平均得点グラフ"
+				   "ステップ－平均得点グラフ"
 				 "STEP <-> avg.SCORE Graph")
 			       "\t" trr-text-name))
       (trr-select-menu))
@@ -274,7 +323,7 @@ at the end of a line.\n\n")
       (trr-get-graph-points)
       (trr-write-graph trr-list-of-time trr-skipped-step
 		       (concat (if trr-japanese
-				   "ステップ−実行時間（分）グラフ"
+				   "ステップ－実行時間（分）グラフ"
 				 "STEP <-> TIME(min) Graph")
 			       "\t" trr-text-name))
       (trr-select-menu))
@@ -284,7 +333,7 @@ at the end of a line.\n\n")
       (trr-get-graph-points)
       (trr-write-graph trr-list-of-times trr-skipped-step
 		       (concat (if trr-japanese
-				   "ステップ−実行回数グラフ"
+				   "ステップ－実行回数グラフ"
 				 "STEP <-> times (the number of execution of trr) Graph")
 			       "\t" trr-text-name))
       (trr-select-menu))
@@ -294,7 +343,7 @@ at the end of a line.\n\n")
       (trr-get-graph-points)
       (trr-write-graph trr-list-of-value trr-skipped-step
 		       (concat (if trr-japanese
-				   "ステップ−突破点数グラフ"
+				   "ステップ－突破点数グラフ"
 				 "STEP <-> ACHIEVEMENT_SCORE Graph")
 			       "\t" trr-text-name))
       (trr-select-menu))

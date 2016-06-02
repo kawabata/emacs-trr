@@ -1,9 +1,38 @@
-;;; trr-sessions - (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
+;;; trr-sessions --- (C) 1996 Yamamoto Hirotaka <ymmt@is.s.u-tokyo.ac.jp>
+
+;;; Commentary:
 
 ;; This file is a part of trr, a type training package for GNU Emacs.
 ;; See the copyright notice in trr.el
 
 ;; for now, there is only one type of session is supported.
+
+;;; Code:
+
+(require 'picture) ; picture-move-down
+
+(defvar trr-japanese)
+(defvar trr-list-of-eval)
+(defvar trr-typist-flag)
+(defvar trr-small-window-flag)
+(defvar trr-win-conf-typist)
+(defvar trr-start-flag)
+(defvar trr-text-lines)
+(defvar trr-correct-char-count)
+(defvar trr-whole-char-count)
+(defvar trr-start-time)
+(defvar trr-return-is-space)
+(defvar trr-ch)
+(defvar trr-correct-char-count)
+(defvar trr-ding-when-miss)
+(defvar trr-end-time)
+(defvar trr-win-conf)
+
+(declare-function trr-write-graph "trr.el")
+(declare-function trr-print-log "trr.el")
+(declare-function trr-display-buffer "trr.el")
+(declare-function trr-trainer-menu-buffer "trr.el")
+
 (defun trr-get-event ()
   (let ((ev (trr-read-event)))
     (while (listp ev)
@@ -23,16 +52,16 @@
 	    (t ?\a)))))
 
 (defun trr-read-event ()
-  (cond
-   ((fboundp 'read-event)
+  ;;(cond
+  ;; ((fboundp 'read-event)
     (read-event))
-   ((fboundp 'next-command-event)
-    (let (char)
-      (while (null (setq char (event-to-character
-			       (next-command-event)))))
-      (char-to-int char)))
-   (t
-    (error "no read-event"))))
+  ;; ((fboundp 'next-command-event)
+  ;;  (let (char)
+  ;;    (while (null (setq char (event-to-character
+  ;;      		       (next-command-event)))))
+  ;;    (char-to-int char)))
+  ;; (t
+  ;;  (error "no read-event"))))
 
 (defun trr-one-session ()
   (other-window -1)

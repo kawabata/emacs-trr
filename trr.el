@@ -7,7 +7,7 @@
 ;;	INAMURA You <inamura@icot.or.jp>
 ;;		*Original Author
 ;; Created: 1 July 1996
-;; Modified: 2015-09-08
+;; Modified: 2016-06-02
 ;; Keywords: games faces
 
 ;;; Commentary:
@@ -33,7 +33,7 @@
 (require 'picture)
 
 (defconst trr-installator "shuji.narazaki@gmail.com"
-  "instllators name or e-mail address")
+  "Instllators name or e-mail address.")
 
 ;; User Customizable Variables.
 
@@ -62,7 +62,7 @@
                         (t (:foreground "aquamarine")))
   "Face for highlighting the name of yourself." :group 'trr)
 
-(defcustom trr-un-hyphenate t "Whether deny hyphnenations."
+(defcustom trr-un-hyphenate t "Whether deny hyphenations."
   :type 'boolean :group 'trr)		; ハイフネーションを消すかどうか
 
 (defcustom trr-return-is-space nil "Whether return & space is equal."
@@ -74,8 +74,9 @@
 (defcustom trr-japanese nil "If t, trr talk to you in Japanese."
   :type 'boolean :group 'trr)		; trrのメッセージを日本語にするかどうか
 
-(defcustom trr-use-update-program nil "If t, use `update-game-score'
-program to write score file." :type 'boolean :group 'trr)
+(defcustom trr-use-update-program nil
+  "If t, use `update-game-score' program to write score file."
+  :type 'boolean :group 'trr)
 
 (defcustom trr-record-dir ; 個人レコード
   (expand-file-name "trrscores" gamegrid-user-score-file-directory)
@@ -87,7 +88,7 @@ program to write score file." :type 'boolean :group 'trr)
    (or gamegrid-user-score-file-directory shared-game-score-directory))
   "Directory where group score records are stored.
 If `trr-use-update-program' is t, score files in this directory must exist
-and be writable by `update-game-score' helper program. "
+and be writable by `update-game-score' helper program."
   :type 'directory :group 'trr)
 
 ;; Hooks
@@ -99,27 +100,27 @@ and be writable by `update-game-score' helper program. "
   "*This hook is run when trr is finished.")
 
 ;; trr flags
-(defvar trr-start-flag nil "whether trr is running")
+(defvar trr-start-flag nil "Non-nil means trr is running.")
 					; trrが始まっているかどうか
-(defvar trr-quit-flag nil "whether trr will be finished")
+(defvar trr-quit-flag nil "Non-nil means trr will be finished.")
 					; trrを終了させるかどうか
-(defvar trr-update-flag nil "whether the record is broken")
+(defvar trr-update-flag nil "Non-nil means the record is broken.")
 					; 記録更新したかどうか
-(defvar trr-pass-flag nil "whether current-step is passed")
+(defvar trr-pass-flag nil "Non-nil means current-step is passed.")
 					; ステップをパスしたかどうか
-(defvar trr-cheat-flag nil "whether trr text is too easy")
+(defvar trr-cheat-flag nil "Non-nil means trr text is too easy.")
 					; いんちきしたかどうか
-(defvar trr-beginner-flag nil "whether this play is the first time")
+(defvar trr-beginner-flag nil "Non-nil means this play is the first time.")
 					; 初めてtrrをしたかどうか
-(defvar trr-random-flag t "whether trr choose the position in file at random")
+(defvar trr-random-flag t "Non-nil means trr choose the position in file at random.")
 					; 文書の位置をランダムに選ぶかどうか
-(defvar trr-secret-flag t "whether the record will be updated")
+(defvar trr-secret-flag t "Non-nil means the record will be updated.")
 					; updateしないかどうか
-(defvar trr-typist-flag t "whether you are Typist")
+(defvar trr-typist-flag t "Non-nil means you are Typist.")
 					; タイピストを目指すかどうか
-(defvar trr-small-window-flag nil "whether the frame is too narrow")
+(defvar trr-small-window-flag nil "Non-nil means the frame is too narrow.")
 					; ウィンドウが小さいかどうか
-(defvar trr-skip-session-flag nil "whether trr skip session")
+(defvar trr-skip-session-flag nil "Non-nil means trr skip session.")
 					; セッションを実行しないかどうか
 
 ;; Buffer names
@@ -148,37 +149,37 @@ and be writable by `update-game-score' helper program. "
 (defvar trr-win-conf-display nil)
 
 ;; Variables for Session
-(defvar trr-eval               -1 "Score")
+(defvar trr-eval               -1 "Score.")
 					; 今回出した点数
-(defvar trr-whole-char-count   0 "the number of characters of the text")
+(defvar trr-whole-char-count   0 "The number of characters of the text.")
 					; テキストの文字数
-(defvar trr-correct-char-count 0 "the number of correct typed characters")
+(defvar trr-correct-char-count 0 "The number of correct typed characters.")
 					; 正しく入力した文字数
-(defvar trr-start-time         0 "start time for a session")
+(defvar trr-start-time         0 "Start time for a session.")
 					; trr(1 session)を初めた時間
-(defvar trr-end-time           0 "end time for a session")
+(defvar trr-end-time           0 "End time for a session.")
 					; trr(1 session)を終えた時間
-(defvar trr-miss-type-ratio    0 "miss type ratio")
+(defvar trr-miss-type-ratio    0 "Miss type ratio.")
 					; ミス率 (/1000)
-(defvar trr-type-speed         0 "the number of characters typed per minute")
+(defvar trr-type-speed         0 "The number of characters typed per minute.")
 					;タイピング速度（文字数／分）
 (defvar trr-ch                 0)
 
 ;; Variables for STEP
-(defvar trr-steps                       0 "current step")
+(defvar trr-steps                       0 "Current step.")
 					; 現在のステップ
 (defvar trr-times-of-current-step       0
-  "total times of the execution of trr in this step")
+  "Total times of the execution of trr in this step.")
 					; このステップでの実行回数
 (defvar trr-time-of-current-step        0
-  "total time of the execution of trr in this step")
+  "Total time of the execution of trr in this step.")
 					; このステップでの実行時間
-(defvar trr-whole-chars-of-current-step 0 "the number of typing in this step")
+(defvar trr-whole-chars-of-current-step 0 "The number of typing in this step.")
 					; このステップでのタイプ回数
 (defvar trr-whole-miss-of-current-step  0
-   "the number of miss typing in this step")
+   "The number of miss typing in this step.")
 					; このステップでのミスタイプ回数
-(defvar trr-times-for-message                  0 "used in trr-message.el")
+(defvar trr-times-for-message                  0 "Used in trr-message.el.")
 					; trr-message.elで使用する
 
 ;; other variables
@@ -188,17 +189,17 @@ and be writable by `update-game-score' helper program. "
   "Directory where text contents are stored."
   :type 'directory :group 'trr)
 
-(defvar trr-number-of-text-lines 0 "(the number of lines in text) - 18")
+(defvar trr-number-of-text-lines 0 "(the number of lines in text) - 18.")
 					; テキストの行数 - 18
 (defvar trr-text-lines           0
-   "the number of lines which should be displayed") ; 表示すべきテキストの行数
-(defvar trr-total-times          0 "times of execution of trr")
+   "The number of lines which should be displayed.") ; 表示すべきテキストの行数
+(defvar trr-total-times          0 "Times of execution of trr.")
 					; 今までの実行回数
-(defvar trr-total-time           0 "total time of execution of trr")
+(defvar trr-total-time           0 "Total time of execution of trr.")
 					; 今までの実行時間
-(defvar trr-high-score           -1 "User's High Score")
+(defvar trr-high-score           -1 "User's High Score.")
 					; 今回までの最高得点
-(defvar trr-high-score-old       -1  "User's previous High Score")
+(defvar trr-high-score-old       -1  "User's previous High Score.")
 					; 前回までの最高得点
 (defvar trr-elapsed-time         0)
 (defvar trr-debug		 nil)
