@@ -25,6 +25,12 @@ If you're `El-Get`_ user, just add below in your emacs config file::
 
 .. _El-Get: https://github.com/dimitri/el-get
 
+Or `MELPA`_ user, just type bellow command in emacs ::
+
+  M-x package-refresh-contents
+  M-x package-install trr
+
+.. _MELPA: https://github.com/melpa/melpa
 
 Usage
 =====
